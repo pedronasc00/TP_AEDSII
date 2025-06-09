@@ -4,8 +4,8 @@ int main() {
     FILE* arq = fopen("POCs/Beef_Cattle.txt", "r");
 
     VFile VetorTermo;
-    InicalizaFiles(&VetorTermo);
-    InsereVetorFiles(&VetorTermo, arq);
+    InicalizaVetor(&VetorTermo);
+    InsereTermo(&VetorTermo, arq);
 
     fclose(arq);
 

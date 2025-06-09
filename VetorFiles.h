@@ -15,10 +15,11 @@ typedef struct VFile{
     int tamanho;
 }VFile;
 
-void InicalizaFiles(VFile* vTermo);
-void InsereVetorFiles(VFile* vtermos, FILE* arq);
+void InicalizaVetor(VFile* vTermo);
+void InsereTermo(VFile* vtermos, FILE* arq);
 void ImprimeVetor(VFile vfile);
 int ContadorTermo(FILE* arq);
 void LiberaVetor(VFile* vfile);
+void TokenizacaoTermo(char* in, char* out);
 
 #endif

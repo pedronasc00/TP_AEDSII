@@ -1,12 +1,12 @@
 #include "VetorFiles.h"
 
-void InicalizaFiles(VFile* vTermo){
+void InicalizaVetor(VFile* vTermo){
     if (vTermo == NULL) return;
     vTermo->VetorF = NULL;
     vTermo->tamanho = 0;
 }
 
-void InsereVetorFiles(VFile* vTermo, FILE* arq) {
+void InsereTermo(VFile* vTermo, FILE* arq) {
     if (vTermo == NULL || arq == NULL) return;
     int temp = 0;
     Chave novoTermo;
@@ -15,9 +15,20 @@ void InsereVetorFiles(VFile* vTermo, FILE* arq) {
     vTermo->VetorF = malloc(vTermo->tamanho * sizeof(novoTermo));
 
     while (temp < vTermo->tamanho && fscanf(arq, "%19s", novoTermo)) {
-        strcpy(vTermo->VetorF[temp].Termo, novoTermo);
+        TokenizacaoTermo(novoTermo, vTermo->VetorF[temp].Termo);
         temp++;
     }
+}
+
+void TokenizacaoTermo(char* in, char* out) {
+    int c_fim = 0;
+    for (int i = 0; in[i] != '\0'; i++) {
+        if (isalpha((unsigned char) in[i])) {
+            out[c_fim] = tolower((unsigned char) in[i]);
+            c_fim++;
+        }
+    }
+    out[c_fim] = '\0';
 }
 
 int ContadorTermo(FILE* arq) {
@@ -42,7 +53,7 @@ void ImprimeVetor(VFile vfile) {
     printf("\n--- Conteudo do VFile ---\n");
     printf("Total de palavras: %d\n{ ", vfile.tamanho);
     for (int i = 0; i < vfile.tamanho; i++) {
-        printf("%s ", vfile.VetorF[i].Termo);
+        printf("%s, ", vfile.VetorF[i].Termo);
     }
     printf("}\n-------------------------\n");
 }
