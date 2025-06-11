@@ -1,14 +1,27 @@
 #include "VetorFiles.h"
 
 int main() {
-    FILE* arq = fopen("POCs/Beef_Cattle.txt", "r");
+    FILE* arq1 = fopen("POCs/Beef_Cattle.txt", "r");
 
-    VFile VetorTermo;
-    InicalizaVetor(&VetorTermo);
-    InsereTermo(&VetorTermo, arq);
+    VFile VT1;
+    InicalizaVetor(&VT1);
+    InsereTermo(&VT1, arq1);
 
-    fclose(arq);
+    fclose(arq1);
 
-    ImprimeVetor(VetorTermo);
-    LiberaVetor(&VetorTermo);
+    ImprimeVetor(VT1);
+
+    LiberaVetor(&VT1);
+        
+    FILE* arq2 = fopen("POCs/Sticker_album.txt", "r");
+
+    VFile VT2;
+    InicalizaVetor(&VT2);
+    InsereTermo(&VT2, arq2);
+
+    fclose(arq2);
+
+    ImprimeVetor(VT2);
+
+    LiberaVetor(&VT2);
 }

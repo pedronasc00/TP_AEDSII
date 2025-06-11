@@ -1,5 +1,6 @@
 #ifndef VFILES_H
 #define VFILES_H
+#include "ListaIndice.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -7,7 +8,8 @@
 
 typedef char Chave[20];
 typedef struct Word {
-    Chave Termo;
+    Chave Palavra;
+    LLista idPalavra;
 }Word;
 
 typedef struct VFile{
@@ -16,7 +18,7 @@ typedef struct VFile{
 }VFile;
 
 void InicalizaVetor(VFile* vTermo);
-void InsereTermo(VFile* vtermos, FILE* arq);
+void InsereTermo(VFile* vtermos, FILE* arq, int idDoc);
 void ImprimeVetor(VFile vfile);
 int ContadorTermo(FILE* arq);
 void LiberaVetor(VFile* vfile);

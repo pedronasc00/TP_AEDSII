@@ -6,16 +6,14 @@ void InicalizaVetor(VFile* vTermo){
     vTermo->tamanho = 0;
 }
 
-void InsereTermo(VFile* vTermo, FILE* arq) {
+void InsereTermo(VFile* vTermo, FILE* arq, int idDoc) {
     if (vTermo == NULL || arq == NULL) return;
     int temp = 0;
-    Chave novoTermo;
     
-    vTermo->tamanho = ContadorTermo(arq);
-    vTermo->VetorF = malloc(vTermo->tamanho * sizeof(novoTermo));
+    Word novoTermo;
 
     while (temp < vTermo->tamanho && fscanf(arq, "%19s", novoTermo)) {
-        TokenizacaoTermo(novoTermo, vTermo->VetorF[temp].Termo);
+        TokenizacaoTermo(novoTermo.Palavra, vTermo->VetorF[temp].Palavra);
         temp++;
     }
 }
@@ -53,7 +51,7 @@ void ImprimeVetor(VFile vfile) {
     printf("\n--- Conteudo do VFile ---\n");
     printf("Total de palavras: %d\n{ ", vfile.tamanho);
     for (int i = 0; i < vfile.tamanho; i++) {
-        printf("%s, ", vfile.VetorF[i].Termo);
+        printf("%s, ", vfile.VetorF[i].Palavra);
     }
     printf("}\n-------------------------\n");
 }
