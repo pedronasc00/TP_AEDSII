@@ -18,10 +18,10 @@ typedef struct VFile{
 }VFile;
 
 void InicalizaVetor(VFile* vTermo);
-void InsereTermo(VFile* vtermos, FILE* arq, int idDoc);
-void ImprimeVetor(VFile vfile);
-int ContadorTermo(FILE* arq);
-void LiberaVetor(VFile* vfile);
+void InsereTermo(VFile* vTermo, FILE* arq, int idDoc);
+void ImprimeVetor(VFile vTermo);
+void LiberaVetor(VFile* vTermo);
 void TokenizacaoTermo(char* in, char* out);
+Word* BuscarPalavra(VFile* vTermo, char* Termo);
 
 #endif

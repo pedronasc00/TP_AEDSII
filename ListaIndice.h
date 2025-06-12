@@ -1,6 +1,7 @@
 #ifndef LL_H
 #define LL_H
-#include "VetorFiles.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 typedef struct Indice {
     int qtde, idDoc;
@@ -19,7 +20,7 @@ typedef struct LLista {
 
 void FLVazia(LLista *tLista);
 int LTamanho(LLista *tLista);
-int LInsere(LLista *tLista, LIndice *pTermo);
+int LInsere(LLista *tLista, Indice *pTermo);
 void LImprime(LLista *tLista);
 
 
