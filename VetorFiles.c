@@ -6,13 +6,10 @@ void InicalizaVetor(VFile* vTermo){
     vTermo->tamanho = 0;
 }
 
-Word* BuscarPalavra(VFile* vTermo, char* Termo) {
-    for (int i = 0; i < vTermo->tamanho; i++) {
-        if (strcmp(vTermo->VetorF[i].Palavra, Termo) == 0) {
-            return &vTermo->VetorF[i];
-        }
-    }
-    return NULL;
+int compare(const void *a, const void *b) {
+    Word *palavraA = (Word *)a;
+    Word *palavraB = (Word *)b;
+    return strcmp(palavraA->Palavra, palavraB->Palavra);
 }
 
 ApontadorLista BuscaIndice(LLista* listaI, int idDoc) {
@@ -40,52 +37,60 @@ void TokenizacaoTermo(char* in, char* out) {
 void InsereTermo(VFile* vTermo, FILE* arq, int idDoc) {
     if (vTermo == NULL || arq == NULL) return;
     int temp = 0;
+    Indice novoIndice = {1, idDoc};
     
     Chave buffer, termoToken;
 
-    while (fscanf(arq, "%19s", buffer)) {
+    while (fscanf(arq, "%19s", buffer) != EOF) {
         TokenizacaoTermo(buffer, termoToken);
         
         if (strlen(termoToken) == 0) continue; 
         
-        Indice novoIndice = {1, idDoc};
-        Word* VerifTermo = BuscarPalavra(vTermo, termoToken);
+        Word chaveBusca;
+        strcpy(chaveBusca.Palavra, termoToken);
+        Word* verifTermo = (Word*)bsearch(&chaveBusca, vTermo->VetorF, vTermo->tamanho, sizeof(Word), compare);
 
-        if (VerifTermo != NULL) {
-            ApontadorLista idIndice = BuscaIndice(&VerifTermo->idPalavra, idDoc);
+        if (verifTermo != NULL) {
+            ApontadorLista idIndice = BuscaIndice(&verifTermo->idPalavra, idDoc);
 
             if (idIndice != NULL) {
                 idIndice->idTermo.qtde++;
             } else {
-                LInsere(&VerifTermo->idPalavra, &novoIndice);
+                LInsere(&verifTermo->idPalavra, &novoIndice);
             }
         } else {
             vTermo->tamanho++;
-            vTermo->VetorF = (Word*)realloc(vTermo->VetorF, vTermo->tamanho * sizeof(Word));
+            
+            Word* temp_pr = (Word*)realloc(vTermo->VetorF, vTermo->tamanho * sizeof(Word));
+
+            if (temp_pr == NULL) {
+                LiberaVetor(vTermo);
+                exit(EXIT_FAILURE);
+            }
+            
+            vTermo->VetorF = temp_pr;
 
             Word* novoTermo = &vTermo->VetorF[vTermo->tamanho - 1];
             strcpy(novoTermo->Palavra, termoToken);
 
             FLVazia(&novoTermo->idPalavra);
             LInsere(&novoTermo->idPalavra, &novoIndice);
+
+            qsort(vTermo->VetorF, vTermo->tamanho, sizeof(Word), compare); 
         }
     }
 }
 
 void ImprimeVetor(VFile vTermo) {
     if (vTermo.VetorF == NULL) return;
-    printf("\n--- Conteudo do VFile ---\n");
-    printf("Total de palavras: %d\n{ ", vTermo.tamanho);
+    printf("\n-------------------------\n");
+    printf("Total de palavras: %d\n ", vTermo.tamanho);
     for (int i = 0; i < vTermo.tamanho; i++) {
         printf("%s ", vTermo.VetorF[i].Palavra);
-        ApontadorLista pAux = vTermo.VetorF[i].idPalavra.pPrimeiro;
-        while (pAux != NULL) {
-            printf("<%d, %d>\t", pAux->idTermo.qtde, pAux->idTermo.idDoc);
-            pAux = pAux->pProx;
-        }
+        LImprime(&vTermo.VetorF[i].idPalavra);
         printf("\n");
     }
-    printf("}-------------------------\n");
+    printf("-------------------------\n");
 }
 
 void LiberaVetor(VFile* vTermo) {

@@ -28,7 +28,7 @@ void LImprime(LLista *tLista) {
     ApontadorLista pAux = NULL;
     pAux = tLista->pPrimeiro->pProx;
     while (pAux != NULL) {
-        printf("<%d, %d> \t", pAux->idTermo.qtde, pAux->idTermo.idDoc);
+        printf("<%d, %d> ", pAux->idTermo.qtde, pAux->idTermo.idDoc);
         pAux = pAux->pProx;
     }
 }

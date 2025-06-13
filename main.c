@@ -1,18 +1,19 @@
 #include "VetorFiles.h"
+#include <stdio.h>
 
 int main() {
-    const char* nomesArquivos[] = {
+    char* arqTexto[] = {
         "POCs/Beef_Cattle.txt",
-        "POCs/Sticker_album.txt",
+        "POCs/Sticker_album.txt"
     };
 
-    int numArq = sizeof(nomesArquivos) / sizeof(nomesArquivos[0]);
+    int numArq = sizeof(arqTexto) / sizeof(arqTexto[0]);
 
     VFile VetorTermos;
     InicalizaVetor(&VetorTermos);
 
     for (int i = 0; i < numArq; i++) {
-        FILE* arq = fopen(nomesArquivos[i], "r");
+        FILE* arq = fopen(arqTexto[i], "r");
         if (arq == NULL) continue;
         InsereTermo(&VetorTermos, arq, (i + 1));
         fclose(arq);

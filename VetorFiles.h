@@ -9,6 +9,7 @@
 typedef char Chave[20];
 typedef struct Word {
     Chave Palavra;
+    int id;
     LLista idPalavra;
 }Word;
 
@@ -22,6 +23,6 @@ void InsereTermo(VFile* vTermo, FILE* arq, int idDoc);
 void ImprimeVetor(VFile vTermo);
 void LiberaVetor(VFile* vTermo);
 void TokenizacaoTermo(char* in, char* out);
-Word* BuscarPalavra(VFile* vTermo, char* Termo);
+int comparaPalavras(const void *a, const void *b);
 
 #endif
