@@ -1,5 +1,6 @@
 #include "ListaIndice.h"
 
+
 void FLVazia(LLista *tLista) {
     tLista->pPrimeiro = (ApontadorLista)malloc(sizeof(LIndice));
     tLista->pUltimo = tLista->pPrimeiro;

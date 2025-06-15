@@ -109,4 +109,5 @@ void LiberaVetor(VFile* vTermo) {
     free(vTermo->VetorF); 
     vTermo->VetorF = NULL; 
     vTermo->tamanho = 0;
-}*/
+}
+*/

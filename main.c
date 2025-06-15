@@ -1,25 +1,28 @@
-#include "Hash.h"
+#include "Tabela_Hash/Contagem.h"
 #include <stdio.h>
+#include <stdlib.h>
+
 
 int main() {
-    char* arqTexto[] = {
-        "POCs/Beef_Cattle.txt",
-        "POCs/Sticker_album.txt"
-    };
+    int opcao = 0;
+    do {
+        printf("\n==== Menu ====\n");
+        printf("1 - Construir indice invertido (tabela hash)\n");
+        printf("0 - Sair\n");
+        printf("Escolha uma opcao: ");
+        scanf("%d", &opcao);
 
-    int numArq = sizeof(arqTexto) / sizeof(arqTexto[0]);
+        switch (opcao) {
+            case 1:
+                constroiIndiceInvertidoHASH();
+                break;
+            case 0:
+                printf("Saindo...\n");
+                break;
+            default:
+                printf("Opcao invalida. Tente novamente.\n");
+        }
+    } while (opcao != 0);
 
-    TipoDicionario Tabela;
-    TipoPesos p;
-    GeraPesos(p);         // Gera os pesos aleatórios para a função de hash
-    Inicializa(Tabela);
-    for (int i = 0; i < numArq; i++) {
-        FILE* arq = fopen(arqTexto[i], "r");
-        if (arq == NULL) continue;
-         ProcessaArquivo(arq, (i + 1), p, Tabela);
-        fclose(arq);
-    }
-    
-    Imprime(Tabela);
-    LiberaTabela(Tabela);
+    return 0;
 }
