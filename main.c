@@ -1,4 +1,4 @@
-#include "VetorFiles.h"
+#include "Hash.h"
 #include <stdio.h>
 
 int main() {
@@ -9,16 +9,17 @@ int main() {
 
     int numArq = sizeof(arqTexto) / sizeof(arqTexto[0]);
 
-    VFile VetorTermos;
-    InicalizaVetor(&VetorTermos);
-
+    TipoDicionario Tabela;
+    TipoPesos p;
+    GeraPesos(p);         // Gera os pesos aleatórios para a função de hash
+    Inicializa(Tabela);
     for (int i = 0; i < numArq; i++) {
         FILE* arq = fopen(arqTexto[i], "r");
         if (arq == NULL) continue;
-        InsereTermo(&VetorTermos, arq, (i + 1));
+         ProcessaArquivo(arq, (i + 1), p, Tabela);
         fclose(arq);
     }
     
-    ImprimeVetor(VetorTermos);
-    LiberaVetor(&VetorTermos);
+    Imprime(Tabela);
+    LiberaTabela(Tabela);
 }

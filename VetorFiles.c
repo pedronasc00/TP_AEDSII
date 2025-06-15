@@ -1,4 +1,4 @@
-#include "VetorFiles.h"
+/*#include "VetorFiles.h"
 
 void InicalizaVetor(VFile* vTermo){
     if (vTermo == NULL) return;
@@ -109,4 +109,4 @@ void LiberaVetor(VFile* vTermo) {
     free(vTermo->VetorF); 
     vTermo->VetorF = NULL; 
     vTermo->tamanho = 0;
-}
+}*/

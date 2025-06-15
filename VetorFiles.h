@@ -1,4 +1,4 @@
-#ifndef VFILES_H
+/*#ifndef VFILES_H
 #define VFILES_H
 #include "ListaIndice.h"
 #include <stdio.h>
@@ -25,4 +25,4 @@ void LiberaVetor(VFile* vTermo);
 void TokenizacaoTermo(char* in, char* out);
 int comparaPalavras(const void *a, const void *b);
 
-#endif
+#endif*/
