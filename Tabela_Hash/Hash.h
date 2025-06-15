@@ -29,6 +29,8 @@ typedef struct TipoCelula {
     TipoApontador Prox;
 } TipoCelula;
 
+
+
 typedef struct TipoLista {
     TipoCelula *Primeiro, *Ultimo;
 } TipoLista;

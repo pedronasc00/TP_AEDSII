@@ -177,8 +177,6 @@ void ProcessaArquivo(FILE* arq, int idDoc, TipoPesos p, TipoLista *Tabela, int M
     }
 }
 
-
-
 void LiberaTabela(TipoLista *Tabela, int M) {
     for (int i = 0; i < M; i++) {
         TipoApontador pAtual = Tabela[i].Primeiro;
