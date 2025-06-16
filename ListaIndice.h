@@ -3,26 +3,27 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
-typedef struct Indice {
+typedef struct Indice
+{
     int qtde, idDoc;
-}Indice;
+} Indice;
 
 typedef struct LIndice *ApontadorLista;
-typedef struct LIndice {
+typedef struct LIndice
+{
     Indice idTermo;
     ApontadorLista pProx;
-}LIndice;
+} LIndice;
 
-typedef struct LLista {
+typedef struct LLista
+{
     ApontadorLista pPrimeiro;
     ApontadorLista pUltimo;
-}LLista;
+} LLista;
 
 void FLVazia(LLista *tLista);
 int LTamanho(LLista *tLista);
 int LInsere(LLista *tLista, Indice *pTermo);
 void LImprime(LLista *tLista);
-
 
 #endif

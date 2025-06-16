@@ -55,6 +55,9 @@ int ContaPalavrasUnicas(char* arquivos[], int numArquivos) {
     free(vetor);
     return tamanho;
 }
+
+
+
 #include <stdio.h>
 #include <math.h>
 #include <stdbool.h>

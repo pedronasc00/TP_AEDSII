@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "vetorfiles.h": "c"
+        "vetorfiles.h": "c",
+        "compara_patricia.h": "c"
     }
 }
