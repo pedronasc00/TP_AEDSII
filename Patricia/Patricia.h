@@ -5,11 +5,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../ListaIndice.h"
+#include "../Tabela_Hash/Contagem.h"
 
 #define D 8 // numero de bits pra chave
 
-typedef unsigned char TipoChave;
+typedef unsigned char TipoChavePatricia;
 typedef unsigned int TipoIndexAmp;
 typedef unsigned char TipoDib;
 

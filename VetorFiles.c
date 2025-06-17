@@ -1,4 +1,4 @@
-/*#include "VetorFiles.h"
+#include "VetorFiles.h"
 
 void InicalizaVetor(VFile* vTermo){
     if (vTermo == NULL) return;
@@ -36,7 +36,7 @@ void TokenizacaoTermo(char* in, char* out) {
 
 void InsereTermo(VFile* vTermo, FILE* arq, int idDoc) {
     if (vTermo == NULL || arq == NULL) return;
-    int temp = 0;
+    
     Indice novoIndice = {1, idDoc};
     
     Chave buffer, termoToken;
@@ -110,4 +110,29 @@ void LiberaVetor(VFile* vTermo) {
     vTermo->VetorF = NULL; 
     vTermo->tamanho = 0;
 }
-*/
+
+void ImprimeVetorOrdenado(){
+        
+        char* arqTexto[] = {
+        "POCs/Beef_Cattle.txt",
+        "POCs/Sticker_album.txt",
+        "POCs/Sticker_album.txt"
+    };
+
+    
+    int numArq = sizeof(arqTexto) / sizeof(arqTexto[0]);
+
+    VFile VetorTermos;
+    InicalizaVetor(&VetorTermos);
+
+    for (int i = 0; i < numArq; i++) {
+        
+        FILE* arq = fopen(arqTexto[i], "r");
+        if (arq == NULL) continue;
+        InsereTermo(&VetorTermos, arq, (i + 1));
+        fclose(arq);
+    }
+
+    ImprimeVetor(VetorTermos);
+    LiberaVetor(&VetorTermos);
+}

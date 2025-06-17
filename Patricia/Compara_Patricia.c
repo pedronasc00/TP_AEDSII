@@ -20,52 +20,9 @@ void TokenizaPat(char *in, char *out)
     out[j] = '\0';
 }
 
-int compare(const void *a, const void *b)
-{
-    return strcmp((const char *)a, (const char *)b);
-}
 
-int ContaPalavrasUnicas(char *arquivos[], int numArquivos)
-{
-    Palavra *vetor = NULL;
-    int tamanho = 0;
 
-    for (int a = 0; a < numArquivos; a++)
-    {
-        FILE *arq = fopen(arquivos[a], "r");
-        if (!arq)
-            continue;
 
-        char buffer[MAX_PALAVRA], palavraLimpa[MAX_PALAVRA];
-        while (fscanf(arq, "%19s", buffer) != EOF)
-        {
-            TokenizaPat(buffer, palavraLimpa);
-            if (strlen(palavraLimpa) == 0)
-                continue;
-
-            Palavra busca;
-            strcpy(busca, palavraLimpa);
-            if (bsearch(&busca, vetor, tamanho, sizeof(Palavra), compare) == NULL)
-            {
-                Palavra *temp = realloc(vetor, (tamanho + 1) * sizeof(Palavra));
-                if (!temp)
-                {
-                    free(vetor);
-                    fclose(arq);
-                    return -1;
-                }
-                vetor = temp;
-                strcpy(vetor[tamanho++], palavraLimpa);
-                qsort(vetor, tamanho, sizeof(Palavra), compare);
-            }
-        }
-
-        fclose(arq);
-    }
-
-    free(vetor);
-    return tamanho;
-}
 
 void constroiIndiceInvertidoPATRICIA()
 {

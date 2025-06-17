@@ -7,4 +7,5 @@ int ContaPalavrasUnicas(char* arquivos[], int numArquivos);
 int calculaM(int totalPalavrasUnicas, float fatorCarga);
 int proximoPrimo(int n);
 void constroiIndiceInvertidoHASH();
+void imprimirIndiceOrdenado();
 #endif

@@ -116,7 +116,7 @@ TipoArvore InserePat(TipoArvore *raiz, char *palavra, int idDoc)
 }
 
 // Pesquisa uma palavra e imprime suas ocorrências
-void Pesquisa(TipoArvore t, char *palavra)
+void PesquisaPAT(TipoArvore t, char *palavra)
 {
   if (t == NULL)
   {

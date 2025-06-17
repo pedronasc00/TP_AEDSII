@@ -1,12 +1,21 @@
-#include "Contagem.h"
+#include "Contagem.h"       // Supondo que VFile, InicalizaVetor, InsereTermo, ImprimeVetor estão aqui
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <math.h>
+#include <stdbool.h>
 
 #define MAX_PALAVRA 20
+#define FatorCarga 1
+
 typedef char Palavra[MAX_PALAVRA];
 
+// Variáveis globais
+VFile indiceGlobal;
+int indiceConstruido = 0;
+
+// Tokenização básica: limpa pontuação e converte para minúsculo
 void Tokeniza(char* in, char* out) {
     int j = 0;
     for (int i = 0; in[i] != '\0'; i++) {
@@ -17,28 +26,29 @@ void Tokeniza(char* in, char* out) {
     out[j] = '\0';
 }
 
-int compare(const void* a, const void* b) {
-    return strcmp((const char*)a, (const char*)b);
-}
 
+
+// Conta palavras únicas nos arquivos
 int ContaPalavrasUnicas(char* arquivos[], int numArquivos) {
     Palavra* vetor = NULL;
     int tamanho = 0;
 
     for (int a = 0; a < numArquivos; a++) {
         FILE* arq = fopen(arquivos[a], "r");
-        if (!arq) continue;
+        if (!arq) {
+            printf("Erro ao abrir %s\n", arquivos[a]);
+            continue;
+        }
 
         char buffer[MAX_PALAVRA], palavraLimpa[MAX_PALAVRA];
         while (fscanf(arq, "%19s", buffer) != EOF) {
             Tokeniza(buffer, palavraLimpa);
             if (strlen(palavraLimpa) == 0) continue;
 
-            Palavra busca;
-            strcpy(busca, palavraLimpa);
-            if (bsearch(&busca, vetor, tamanho, sizeof(Palavra), compare) == NULL) {
+            if (bsearch(palavraLimpa, vetor, tamanho, sizeof(Palavra), compare) == NULL) {
                 Palavra* temp = realloc(vetor, (tamanho + 1) * sizeof(Palavra));
                 if (!temp) {
+                    printf("Erro de alocação.\n");
                     free(vetor);
                     fclose(arq);
                     return -1;
@@ -56,19 +66,13 @@ int ContaPalavrasUnicas(char* arquivos[], int numArquivos) {
     return tamanho;
 }
 
-
-
-#include <stdio.h>
-#include <math.h>
-#include <stdbool.h>
-
-// Função para verificar se um número é primo
+// Verifica se n é primo
 bool ehPrimo(int n) {
     if (n <= 1) return false;
     if (n <= 3) return true;
     if (n % 2 == 0 || n % 3 == 0) return false;
 
-    int limite = (int) sqrt(n);
+    int limite = (int)sqrt(n);
     for (int i = 5; i <= limite; i += 6) {
         if (n % i == 0 || n % (i + 2) == 0)
             return false;
@@ -76,19 +80,18 @@ bool ehPrimo(int n) {
     return true;
 }
 
-// Função para encontrar o próximo primo >= n
+// Encontra próximo número primo >= n
 int proximoPrimo(int n) {
-    while (!ehPrimo(n)) {
-        n++;
-    }
+    while (!ehPrimo(n)) n++;
     return n;
 }
 
-// Função que retorna o tamanho M favorável para a tabela hash
+// Calcula tamanho ideal da tabela hash
 int calculaM(int totalPalavrasUnicas, float fatorCarga) {
-    int minimoM = (int) ceil(totalPalavrasUnicas / fatorCarga);
+    int minimoM = (int)ceil(totalPalavrasUnicas / fatorCarga);
     return proximoPrimo(minimoM);
 }
+
 
 void constroiIndiceInvertidoHASH() {
     char* arqTexto[] = {
@@ -128,4 +131,3 @@ void constroiIndiceInvertidoHASH() {
     LiberaTabela(Tabela, M);
     free(Tabela);
 }
-

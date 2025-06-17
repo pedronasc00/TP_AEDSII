@@ -6,7 +6,7 @@
 #include <sys/time.h>
 #include <string.h>
 #include <ctype.h>
-#include "../ListaIndice.h"
+#include "../VetorFiles.h"
 
 
 
@@ -53,7 +53,7 @@ void Retira(TipoItem x, TipoPesos p, TipoLista *Tabela, int M);
 void Imp(TipoLista Lista);
 void Imprime(TipoLista *Tabela, int M);
 void LerPalavra(char *p, int Tam);
-void TokenizacaoTermo(char* in, char* out);
+
 void ProcessaArquivo(FILE* arq, int idDoc, TipoPesos p, TipoLista *Tabela, int M);
 ApontadorLista BuscaIndice(LLista* listaI, int idDoc);
 void LiberaTabela(TipoLista *Tabela, int M);

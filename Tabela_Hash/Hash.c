@@ -123,24 +123,7 @@ void LerPalavra(char *p, int Tam) {
         p[i] = '\0';
 }
 
-void TokenizacaoTermo(char* in, char* out) {
-    int c_fim = 0;
-    for (int i = 0; in[i] != '\0'; i++) {
-        if (isalpha((unsigned char)in[i]))
-            out[c_fim++] = tolower((unsigned char)in[i]);
-    }
-    out[c_fim] = '\0';
-}
 
-ApontadorLista BuscaIndice(LLista* listaI, int idDoc) {
-    ApontadorLista pAux = listaI->pPrimeiro->pProx;
-    while (pAux != NULL) {
-        if (pAux->idTermo.idDoc == idDoc)
-            return pAux;
-        pAux = pAux->pProx;
-    }
-    return NULL;
-}
 
 void ProcessaArquivo(FILE* arq, int idDoc, TipoPesos p, TipoLista *Tabela, int M) {
     if (arq == NULL) return;
