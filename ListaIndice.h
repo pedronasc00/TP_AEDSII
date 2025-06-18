@@ -3,9 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
-typedef struct Indice
-{
+typedef struct Indice {
     int qtde, idDoc;
 } Indice;
 

@@ -96,7 +96,7 @@ void Retira(TipoItem x, TipoPesos p, TipoLista *Tabela, int M) {
 void Imp(TipoLista Lista) {
     TipoApontador Aux = Lista.Primeiro->Prox;
     while (Aux != NULL) {
-        printf("Palavra: %s ", Aux->Item.Chave);
+        printf("%s ", Aux->Item.Chave);
         LImprime(&Aux->Item.idPalavra);
         printf("\n");
         Aux = Aux->Prox;
@@ -123,15 +123,13 @@ void LerPalavra(char *p, int Tam) {
         p[i] = '\0';
 }
 
-
-
 void ProcessaArquivo(FILE* arq, int idDoc, TipoPesos p, TipoLista *Tabela, int M) {
     if (arq == NULL) return;
 
-    char buffer[100]; 
+    char buffer[20]; 
     TipoChave termoToken;
 
-    while (fscanf(arq, "%99s", buffer) != EOF) {
+    while (fscanf(arq, "%19s", buffer) != EOF) {
         TokenizacaoTermo(buffer, termoToken);
 
         if (strlen(termoToken) == 0) continue;

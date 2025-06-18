@@ -1,4 +1,5 @@
 #include "VetorFiles.h"
+#include "Hash/Hash.h"
 
 void InicalizaVetor(VFile* vTermo){
     if (vTermo == NULL) return;
@@ -111,28 +112,30 @@ void LiberaVetor(VFile* vTermo) {
     vTermo->tamanho = 0;
 }
 
-void ImprimeVetorOrdenado(){
-        
-        char* arqTexto[] = {
-        "POCs/Beef_Cattle.txt",
-        "POCs/Sticker_album.txt",
-        "POCs/Sticker_album.txt"
-    };
-
-    
-    int numArq = sizeof(arqTexto) / sizeof(arqTexto[0]);
-
-    VFile VetorTermos;
-    InicalizaVetor(&VetorTermos);
-
-    for (int i = 0; i < numArq; i++) {
-        
-        FILE* arq = fopen(arqTexto[i], "r");
-        if (arq == NULL) continue;
-        InsereTermo(&VetorTermos, arq, (i + 1));
-        fclose(arq);
+void ImprimeHashOrdenado(TipoLista* TabelaHash, int M){
+    if (TabelaHash == NULL || M == 0) {
+        return;
     }
+    
+    VFile vTermo;
+    InicalizaVetor(&vTermo);
 
-    ImprimeVetor(VetorTermos);
-    LiberaVetor(&VetorTermos);
+    for (int i = 0; i < M; i++) {
+        TipoApontador pAux = TabelaHash[i].Primeiro->Prox;
+
+        while (pAux != NULL) {
+            vTermo.tamanho++;
+            vTermo.VetorF = (Word*)realloc(vTermo.VetorF, vTermo.tamanho * sizeof(Word));
+
+            Word* novoTermo = &vTermo.VetorF[vTermo.tamanho - 1];
+            strcpy(novoTermo->Palavra, pAux->Item.Chave);
+            novoTermo->idPalavra = pAux->Item.idPalavra;
+
+            pAux = pAux->Prox;
+        }
+    }
+    
+    qsort(vTermo.VetorF, vTermo.tamanho, sizeof(Word), compare);
+    ImprimeVetor(vTermo);
+    free(vTermo.VetorF);
 }

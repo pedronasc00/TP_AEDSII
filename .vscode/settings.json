@@ -1,6 +1,10 @@
 {
     "files.associations": {
         "vetorfiles.h": "c",
-        "compara_patricia.h": "c"
-    }
+        "compara_patricia.h": "c",
+        "hash.h": "c",
+        "listaindice.h": "c",
+        "string.h": "c"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
 }

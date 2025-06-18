@@ -1,10 +1,4 @@
 #include "Contagem.h"       // Supondo que VFile, InicalizaVetor, InsereTermo, ImprimeVetor estão aqui
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include <math.h>
-#include <stdbool.h>
 
 #define MAX_PALAVRA 20
 #define FatorCarga 1
@@ -14,19 +8,6 @@ typedef char Palavra[MAX_PALAVRA];
 // Variáveis globais
 VFile indiceGlobal;
 int indiceConstruido = 0;
-
-// Tokenização básica: limpa pontuação e converte para minúsculo
-void Tokeniza(char* in, char* out) {
-    int j = 0;
-    for (int i = 0; in[i] != '\0'; i++) {
-        if (isalpha((unsigned char)in[i])) {
-            out[j++] = tolower((unsigned char)in[i]);
-        }
-    }
-    out[j] = '\0';
-}
-
-
 
 // Conta palavras únicas nos arquivos
 int ContaPalavrasUnicas(char* arquivos[], int numArquivos) {
@@ -42,7 +23,7 @@ int ContaPalavrasUnicas(char* arquivos[], int numArquivos) {
 
         char buffer[MAX_PALAVRA], palavraLimpa[MAX_PALAVRA];
         while (fscanf(arq, "%19s", buffer) != EOF) {
-            Tokeniza(buffer, palavraLimpa);
+            TokenizacaoTermo(buffer, palavraLimpa);
             if (strlen(palavraLimpa) == 0) continue;
 
             if (bsearch(palavraLimpa, vetor, tamanho, sizeof(Palavra), compare) == NULL) {
@@ -80,9 +61,9 @@ bool ehPrimo(int n) {
     return true;
 }
 
-// Encontra próximo número primo >= n
+// Encontra próximo número primo <= n
 int proximoPrimo(int n) {
-    while (!ehPrimo(n)) n++;
+    while (!ehPrimo(n)) n--;
     return n;
 }
 
@@ -93,31 +74,25 @@ int calculaM(int totalPalavrasUnicas, float fatorCarga) {
 }
 
 
-void constroiIndiceInvertidoHASH() {
-    char* arqTexto[] = {
-        "POCs/Beef_Cattle.txt",
-        "POCs/Sticker_album.txt"
-    };
+void constroiIndiceInvertidoHASH(char* arqTexto[], int numArqs, TipoLista* Tabela, int* M_ptr) {
 
-    int numArq = sizeof(arqTexto) / sizeof(arqTexto[0]);
-    
     TipoPesos p;
     GeraPesos(p);  // Gera os pesos aleatórios para a função de hash
 
-    int totalUnicas = ContaPalavrasUnicas(arqTexto, numArq);
+    int totalUnicas = ContaPalavrasUnicas(arqTexto, numArqs);
     printf("Total de palavras unicas: %d\n", totalUnicas);
 
     int M = calculaM(totalUnicas, FatorCarga);
     printf("Tamanho da Tabela Hash: %d\n", M);
 
-    TipoLista* Tabela = malloc(M * sizeof(TipoLista));
+    Tabela = malloc(M * sizeof(TipoLista));
     if (Tabela == NULL) {
         printf("Erro ao alocar tabela hash.\n");
         return;
     }
     Inicializa(Tabela, M);
 
-    for (int i = 0; i < numArq; i++) {
+    for (int i = 0; i < numArqs; i++) {
         FILE* arq = fopen(arqTexto[i], "r");
         if (arq == NULL) {
             printf("Erro ao abrir %s\n", arqTexto[i]);
@@ -127,7 +102,7 @@ void constroiIndiceInvertidoHASH() {
         fclose(arq);
     }
 
+    *M_ptr = M;
+
     Imprime(Tabela, M);
-    LiberaTabela(Tabela, M);
-    free(Tabela);
 }

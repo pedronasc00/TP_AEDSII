@@ -7,25 +7,7 @@
 #define MAX_PALAVRA 20
 typedef char Palavra[MAX_PALAVRA];
 
-void TokenizaPat(char *in, char *out)
-{
-    int j = 0;
-    for (int i = 0; in[i] != '\0'; i++)
-    {
-        if (isalpha((unsigned char)in[i]))
-        {
-            out[j++] = tolower((unsigned char)in[i]);
-        }
-    }
-    out[j] = '\0';
-}
-
-
-
-
-
-void constroiIndiceInvertidoPATRICIA()
-{
+void constroiIndiceInvertidoPATRICIA() {
     char *arqTexto[] = {
         "POCs/Beef_Cattle.txt",
         "POCs/Sticker_album.txt"};
@@ -36,8 +18,7 @@ void constroiIndiceInvertidoPATRICIA()
     TipoArvore arvorePatricia = NULL;
 
     // Processa cada arquivo
-    for (int i = 0; i < numArq; i++)
-    {
+    for (int i = 0; i < numArq; i++) {
         FILE *arq = fopen(arqTexto[i], "r");
         if (arq == NULL)
         {
@@ -48,9 +29,8 @@ void constroiIndiceInvertidoPATRICIA()
         char buffer[100];
         char palavraLimpa[100];
 
-        while (fscanf(arq, "%99s", buffer) != EOF)
-        {
-            TokenizaPat(buffer, palavraLimpa);
+        while (fscanf(arq, "%99s", buffer) != EOF) {
+            TokenizacaoTermo(buffer, palavraLimpa);
             if (strlen(palavraLimpa) == 0)
                 continue;
 

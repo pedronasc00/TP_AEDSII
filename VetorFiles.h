@@ -6,6 +6,8 @@
 #include <string.h>
 #include <ctype.h>
 
+struct TipoLista;
+
 typedef char Chave[20];
 typedef struct Word {
     Chave Palavra;
@@ -25,5 +27,5 @@ void LiberaVetor(VFile* vTermo);
 void TokenizacaoTermo(char* in, char* out);
 int compare(const void *a, const void *b);
 ApontadorLista BuscaIndice(LLista* listaI, int idDoc);
-void ImprimeVetorOrdenado();
+void ImprimeHashOrdenado(struct TipoLista* TabelaHash, int M);
 #endif

@@ -6,9 +6,7 @@
 #include <sys/time.h>
 #include <string.h>
 #include <ctype.h>
-#include "../VetorFiles.h"
-
-
+#include "VetorFiles.h"
 
 #define N 20
 #define TAMALFABETO 256
@@ -29,14 +27,10 @@ typedef struct TipoCelula {
     TipoApontador Prox;
 } TipoCelula;
 
-
-
 typedef struct TipoLista {
     TipoCelula *Primeiro, *Ultimo;
 } TipoLista;
 
-// Tabela Hash como ponteiro dinâmico
-extern TipoLista* Tabela;  // Deve ser alocada em tempo de execução com malloc
 
 // Protótipos das funções
 void THFLVazia(TipoLista *Lista);

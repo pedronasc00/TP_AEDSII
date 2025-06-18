@@ -2,13 +2,13 @@
 EXEC = teste
 
 # Arquivos fonte
-SRC =  VetorFiles.c Tabela_Hash/Hash.c ListaIndice.c Tabela_Hash/Contagem.c main.c Patricia/Compara_Patricia.c Patricia/Patricia.c 
+SRC =  VetorFiles.c Hash/Hash.c ListaIndice.c Hash/Contagem.c Patricia/Compara_Patricia.c Patricia/Patricia.c main.c
 
 # Compilador
 CC = gcc
 
 # Flags de compilação (adicione -g se quiser depuração, ou -Wall para warnings)
-CFLAGS = -Wall -I. -I./Tabela_Hash
+CFLAGS = -Wall -I. -I./Hash
 
 # Regra principal
 all: $(EXEC)
@@ -17,7 +17,7 @@ all: $(EXEC)
 
 # Regra de compilação
 $(EXEC): $(SRC)
-	$(CC) $(CFLAGS) -o $(EXEC) $(SRC)
+	$(CC) $(CFLAGS) -o $(EXEC) $(SRC) -lm
 
 # Limpeza dos arquivos compilados
 clean:

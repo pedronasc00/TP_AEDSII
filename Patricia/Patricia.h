@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../Tabela_Hash/Contagem.h"
+#include "../Hash/Contagem.h"
 
 #define D 8 // numero de bits pra chave
 
@@ -13,26 +13,21 @@ typedef unsigned char TipoChavePatricia;
 typedef unsigned int TipoIndexAmp;
 typedef unsigned char TipoDib;
 
-typedef enum
-{
+typedef enum {
     Interno,
     Externo
 } TipoNo;
 
 typedef struct TipoPatNo *TipoArvore;
-typedef struct TipoPatNo
-{
+typedef struct TipoPatNo {
     TipoNo nt;
-    union
-    {
-        struct
-        {
+    union {
+        struct {
             TipoIndexAmp Index;
             char caractere;
             TipoArvore Esq, Dir;
         } NInterno;
-        struct
-        {
+        struct {
             char *Palavra;
             LLista Ocorrencias; // lista qtde, idDoc
         } NExterno;
