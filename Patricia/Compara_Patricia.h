@@ -1,6 +1,7 @@
+#ifndef COMPARA_PATRICIA_H
+#define COMPARA_PATRICIA_H
 #include "Patricia.h"
-#include "VetorFiles.h"
 
-int calculaM(int totalPalavrasUnicas, float fatorCarga);
-int proximoPrimo(int n);
 void constroiIndiceInvertidoPATRICIA();
+
+#endif

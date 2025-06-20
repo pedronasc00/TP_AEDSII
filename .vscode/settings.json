@@ -4,7 +4,9 @@
         "compara_patricia.h": "c",
         "hash.h": "c",
         "listaindice.h": "c",
-        "string.h": "c"
+        "string.h": "c",
+        "cstdlib": "c",
+        "stdlib.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

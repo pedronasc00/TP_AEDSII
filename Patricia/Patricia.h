@@ -4,19 +4,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "../ListaIndice.h"  // Usa sua lista personalizada
 
-#include "../Hash/Contagem.h"
+#define TAM_MAX_PALAVRA 32
+#define D (TAM_MAX_PALAVRA * 8) // Número máximo de bits
 
-#define D 8 // numero de bits pra chave
-
-typedef unsigned char TipoChavePatricia;
+typedef char *TipoChavePatricia;
 typedef unsigned int TipoIndexAmp;
 typedef unsigned char TipoDib;
 
-typedef enum {
-    Interno,
-    Externo
-} TipoNo;
+typedef enum { Interno, Externo } TipoNo;
+
 
 typedef struct TipoPatNo *TipoArvore;
 typedef struct TipoPatNo {
@@ -29,21 +27,22 @@ typedef struct TipoPatNo {
         } NInterno;
         struct {
             char *Palavra;
-            LLista Ocorrencias; // lista qtde, idDoc
+            LLista Ocorrencias; // Usa sua lista de ocorrência
         } NExterno;
     } NO;
 } TipoPatNo;
 
-// --- Funções ---
 
-short EExterno(TipoArvore p);
-TipoArvore CriaNoint(TipoIndexAmp i, char caractere, TipoArvore Esq, TipoArvore Dir);
-TipoArvore CriaNoExt(char *palavra, int idDoc);
-void PesquisaPat(TipoArvore t, char *palavra);
-TipoArvore InserePat(TipoArvore *raiz, char *palavra, int idDoc);
-TipoArvore InsereEntre(char *palavra, int idDoc, TipoArvore *t, TipoIndexAmp i);
-void ImprimePatricia(TipoArvore p);
-int PrimeiraDiferenca(char *a, char *b);
-void LiberaPatricia(TipoArvore t);
+
+TipoDib Patricia_Bit(TipoIndexAmp i, TipoChavePatricia k);
+short Patricia_EhExterno(TipoArvore p);
+
+TipoArvore Patricia_CriaNoInterno(int i, TipoArvore Esq, TipoArvore Dir);
+TipoArvore Patricia_CriaNoExterno(TipoChavePatricia k, int idDoc);
+
+TipoArvore Patricia_Insere(TipoChavePatricia k, TipoArvore t, int idDoc);
+void Patricia_Pesquisa(TipoChavePatricia k, TipoArvore t);
+void Patricia_ImprimeArvore(TipoArvore t);
+void Patricia_LiberaArvore(TipoArvore *t);
 
 #endif
