@@ -2,6 +2,5 @@
 #define COMPARA_PATRICIA_H
 #include "Patricia.h"
 
-void constroiIndiceInvertidoPATRICIA();
-
+void constroiIndiceInvertidoPATRICIA(TipoArvore *arvorePatricia, char *arqTexto[], int numArq, int *comparacoesInsercaoPatricia);
 #endif

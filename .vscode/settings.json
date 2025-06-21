@@ -6,7 +6,9 @@
         "listaindice.h": "c",
         "string.h": "c",
         "cstdlib": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "contagem.h": "c",
+        "relevancia_patricia.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }
