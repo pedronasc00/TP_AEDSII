@@ -106,12 +106,19 @@ void Retira(TipoItem x, TipoPesos p, TipoLista *Tabela, int M) {
     else
         Ret(Ap, &Tabela[h(x.Chave, p, M)], &x);
 }
-
+void LImprimeHASH(LLista *tLista) {
+    ApontadorLista pAux = NULL;
+    pAux = tLista->pPrimeiro->pProx;
+    while (pAux != NULL) {
+        printf("<%d, %d> ", pAux->idTermo.qtde, (pAux->idTermo.idDoc)+1);
+        pAux = pAux->pProx;
+    }
+}
 void Imp(TipoLista Lista) {
     TipoApontador Aux = Lista.Primeiro->Prox;
     while (Aux != NULL) {
         printf(" %s ", Aux->Item.Chave);
-        LImprime(&Aux->Item.idPalavra);
+        LImprimeHASH(&Aux->Item.idPalavra);
         Aux = Aux->Prox;
         if(Aux!= NULL) printf ("->");
     }
@@ -210,7 +217,7 @@ void PesquisaNaTabelaHash(TipoLista* TabelaHash, int M, TipoPesos p, int *compar
 
         ApontadorLista pIndice = itemAchado->idPalavra.pPrimeiro->pProx;
         while (pIndice != NULL) {
-            printf("<%d, %d> ", pIndice->idTermo.qtde, pIndice->idTermo.idDoc);
+            printf("<%d, %d> ", pIndice->idTermo.qtde, (pIndice->idTermo.idDoc)+1);
             pIndice = pIndice->pProx;
         }
         printf("\n");
