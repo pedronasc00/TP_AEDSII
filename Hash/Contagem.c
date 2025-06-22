@@ -71,26 +71,21 @@ int proximoPrimo(int n) {
 int calculaM(int totalPalavrasUnicas, float fatorCarga) {
     int minimoM = (int)ceil(totalPalavrasUnicas / fatorCarga);
     return proximoPrimo(minimoM);
+    
 }
 
-
-void constroiIndiceInvertidoHASH(char* arqTexto[], int numArqs, TipoLista* Tabela, int* M_ptr) {
-
-    TipoPesos p;
-    GeraPesos(p);  // Gera os pesos aleatórios para a função de hash
-
+void constroiIndiceInvertidoHASH(char* arqTexto[], int numArqs, TipoLista **Tabela_ptr, int *M_ptr, TipoPesos p, int *comparacoesInsercaoHash)
+{
+    *comparacoesInsercaoHash = 0;
     int totalUnicas = ContaPalavrasUnicas(arqTexto, numArqs);
-    printf("Total de palavras unicas: %d\n", totalUnicas);
-
     int M = calculaM(totalUnicas, FatorCarga);
-    printf("Tamanho da Tabela Hash: %d\n", M);
-
-    Tabela = malloc(M * sizeof(TipoLista));
-    if (Tabela == NULL) {
+    *Tabela_ptr = malloc(M * sizeof(TipoLista));
+    if (*Tabela_ptr == NULL) {
         printf("Erro ao alocar tabela hash.\n");
         return;
     }
-    Inicializa(Tabela, M);
+
+    Inicializa(*Tabela_ptr, M);
 
     for (int i = 0; i < numArqs; i++) {
         FILE* arq = fopen(arqTexto[i], "r");
@@ -98,11 +93,16 @@ void constroiIndiceInvertidoHASH(char* arqTexto[], int numArqs, TipoLista* Tabel
             printf("Erro ao abrir %s\n", arqTexto[i]);
             continue;
         }
-        ProcessaArquivo(arq, i + 1, p, Tabela, M);
+
+        int idDoc = i;  // define o identificador do documento
+        ProcessaArquivo(arq, idDoc, p, *Tabela_ptr, M, comparacoesInsercaoHash);
+
         fclose(arq);
     }
 
     *M_ptr = M;
-
-    Imprime(Tabela, M);
+    Imprime(*Tabela_ptr, M);
+    
+    printf("Total de palavras unicas: %d\n", totalUnicas);
+    printf("Tamanho da Tabela Hash: %d\n", M);
 }

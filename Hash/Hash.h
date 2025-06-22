@@ -39,17 +39,17 @@ void Ret(TipoApontador p, TipoLista *Lista, TipoItem *Item);
 void GeraPesos(TipoPesos p);
 TipoIndice h(TipoChave Chave, TipoPesos p, int M);
 void Inicializa(TipoLista *Tabela, int M);
-TipoApontador Pesquisa(TipoChave Ch, TipoPesos p, TipoLista *Tabela, int M);
-TipoItem* PesquisaItem(TipoChave Ch, TipoPesos p, TipoLista *Tabela, int M);
+TipoApontador Pesquisa(TipoChave Ch, TipoPesos p, TipoLista *Tabela, int M, int *comparacoes);
+TipoItem* PesquisaItem(TipoChave Ch, TipoPesos p, TipoLista *Tabela, int M, int *comparacoes);
 void Ins(TipoItem x, TipoLista *Lista);
-int Insere(TipoItem x, TipoPesos p, TipoLista *Tabela, int M);
+int Insere(TipoItem x, TipoPesos p, TipoLista *Tabela, int M, int *totalComparacoes);
 void Retira(TipoItem x, TipoPesos p, TipoLista *Tabela, int M);
 void Imp(TipoLista Lista);
 void Imprime(TipoLista *Tabela, int M);
 void LerPalavra(char *p, int Tam);
 
-void ProcessaArquivo(FILE* arq, int idDoc, TipoPesos p, TipoLista *Tabela, int M);
+void ProcessaArquivo(FILE* arq, int idDoc, TipoPesos p, TipoLista *Tabela, int M, int *totalComparacoes);
 ApontadorLista BuscaIndice(LLista* listaI, int idDoc);
 void LiberaTabela(TipoLista *Tabela, int M);
-
+void PesquisaNaTabelaHash(TipoLista* TabelaHash, int M, TipoPesos p, int *comparacoes);
 #endif // HASH_H

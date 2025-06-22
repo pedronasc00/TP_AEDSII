@@ -55,38 +55,52 @@ void Inicializa(TipoLista *Tabela, int M) {
         THFLVazia(&Tabela[i]);
 }
 
-TipoApontador Pesquisa(TipoChave Ch, TipoPesos p, TipoLista *Tabela, int M) {
+TipoApontador Pesquisa(TipoChave Ch, TipoPesos p, TipoLista *Tabela, int M, int *comparacoes) {
     TipoIndice i = h(Ch, p, M);
     TipoApontador Ap;
+
+    *comparacoes = 0;  // inicia a contagem
+
     if (THVazia(Tabela[i])) return NULL;
+
     Ap = Tabela[i].Primeiro;
-    while (Ap->Prox->Prox != NULL && strncmp(Ch, Ap->Prox->Item.Chave, sizeof(TipoChave)))
+    while (Ap->Prox->Prox != NULL && strncmp(Ch, Ap->Prox->Item.Chave, sizeof(TipoChave))) {
         Ap = Ap->Prox;
-    if (!strncmp(Ch, Ap->Prox->Item.Chave, sizeof(TipoChave))) 
+        (*comparacoes)++;
+        printf("\nDebug..... comparacao: %d %s\n", *comparacoes, Ap->Item.Chave);
+    }
+
+    (*comparacoes)++;  // conta a última comparação
+    if (!strncmp(Ch, Ap->Prox->Item.Chave, sizeof(TipoChave)))
         return Ap;
+
     return NULL;
 }
 
-TipoItem* PesquisaItem(TipoChave Ch, TipoPesos p, TipoLista *Tabela, int M) {
-    TipoApontador pAnterior = Pesquisa(Ch, p, Tabela, M);
+TipoItem* PesquisaItem(TipoChave Ch, TipoPesos p, TipoLista *Tabela, int M, int *comparacoes) {
+    TipoApontador pAnterior = Pesquisa(Ch, p, Tabela, M, comparacoes);
     if (pAnterior != NULL)
         return &pAnterior->Prox->Item;
     return NULL;
-}  
+}
 
-int Insere(TipoItem x, TipoPesos p, TipoLista *Tabela, int M) {
-    if (Pesquisa(x.Chave, p, Tabela, M) == NULL) {
+int Insere(TipoItem x, TipoPesos p, TipoLista *Tabela, int M, int *totalComparacoes) {
+    int comparacoes = 0;
+    if (Pesquisa(x.Chave, p, Tabela, M, &comparacoes) == NULL) {
         Ins(x, &Tabela[h(x.Chave, p, M)]);
+        *totalComparacoes += comparacoes;
         return 1; // inseriu nova palavra
     } else {
-        // printf("Registro já está presente\n"); // opcional
+        *totalComparacoes += comparacoes;
         return 0; // palavra já existente
     }
 }
 
 
+
 void Retira(TipoItem x, TipoPesos p, TipoLista *Tabela, int M) {
-    TipoApontador Ap = Pesquisa(x.Chave, p, Tabela, M);
+    int comparacoes;
+    TipoApontador Ap = Pesquisa(x.Chave, p, Tabela, M,&comparacoes);
     if (Ap == NULL)
         printf(" Registro nao esta presente\n");
     else
@@ -123,9 +137,9 @@ void LerPalavra(char *p, int Tam) {
         p[i] = '\0';
 }
 
-void ProcessaArquivo(FILE* arq, int idDoc, TipoPesos p, TipoLista *Tabela, int M) {
+void ProcessaArquivo(FILE* arq, int idDoc, TipoPesos p, TipoLista *Tabela, int M, int *totalComparacoes) {
     if (arq == NULL) return;
-
+    int comparacoes;
     char buffer[20]; 
     TipoChave termoToken;
 
@@ -134,7 +148,7 @@ void ProcessaArquivo(FILE* arq, int idDoc, TipoPesos p, TipoLista *Tabela, int M
 
         if (strlen(termoToken) == 0) continue;
 
-        TipoItem* itemEncontrado = PesquisaItem(termoToken, p, Tabela, M);
+        TipoItem* itemEncontrado = PesquisaItem(termoToken, p, Tabela, M,&comparacoes);
 
         if (itemEncontrado != NULL) {
             ApontadorLista indiceDoc = BuscaIndice(&itemEncontrado->idPalavra, idDoc);
@@ -152,8 +166,7 @@ void ProcessaArquivo(FILE* arq, int idDoc, TipoPesos p, TipoLista *Tabela, int M
             Indice novoIndice = {1, idDoc};
             LInsere(&novoItem.idPalavra, &novoIndice);
 
-            Insere(novoItem, p, Tabela, M);
-            // Não incrementa mais totalPalavrasUnicas aqui!
+            Insere(novoItem, p, Tabela, M, totalComparacoes);
         }
     }
 }
@@ -174,5 +187,33 @@ void LiberaTabela(TipoLista *Tabela, int M) {
             free(pAtual);
             pAtual = pProximo;
         }
+    }
+}
+void PesquisaNaTabelaHash(TipoLista* TabelaHash, int M, TipoPesos p, int *comparacoes) {
+    *comparacoes = 0;
+    if (TabelaHash == NULL || M == 0) {
+        printf("Tabela Hash nao foi criada ainda.\n");
+        return;
+    }
+
+    char palavraBusca[N];
+    printf("Digite a palavra para pesquisa na tabela hash: ");
+    scanf("%s", palavraBusca);
+
+    int indiceHash = h(palavraBusca, p, M);
+    TipoItem* itemAchado = PesquisaItem(palavraBusca, p, TabelaHash, M, comparacoes);
+    //printf("Comparacoes realizadas: %d", *comparacoes);
+
+    if (itemAchado != NULL) {
+        printf("\n%d: %s ", indiceHash, itemAchado->Chave);
+
+        ApontadorLista pIndice = itemAchado->idPalavra.pPrimeiro->pProx;
+        while (pIndice != NULL) {
+            printf("<%d, %d> ", pIndice->idTermo.qtde, pIndice->idTermo.idDoc);
+            pIndice = pIndice->pProx;
+        }
+        printf("\n");
+    } else {
+        printf("Palavra '%s' nao encontrada na tabela hash.\n", palavraBusca);
     }
 }
