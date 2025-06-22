@@ -67,7 +67,7 @@ TipoApontador Pesquisa(TipoChave Ch, TipoPesos p, TipoLista *Tabela, int M, int 
     while (Ap->Prox->Prox != NULL && strncmp(Ch, Ap->Prox->Item.Chave, sizeof(TipoChave))) {
         Ap = Ap->Prox;
         (*comparacoes)++;
-        printf("\nDebug..... comparacao: %d %s\n", *comparacoes, Ap->Item.Chave);
+       
     }
 
     (*comparacoes)++;  // conta a última comparação
@@ -110,11 +110,12 @@ void Retira(TipoItem x, TipoPesos p, TipoLista *Tabela, int M) {
 void Imp(TipoLista Lista) {
     TipoApontador Aux = Lista.Primeiro->Prox;
     while (Aux != NULL) {
-        printf("%s ", Aux->Item.Chave);
+        printf(" %s ", Aux->Item.Chave);
         LImprime(&Aux->Item.idPalavra);
-        printf("\n");
         Aux = Aux->Prox;
+        if(Aux!= NULL) printf ("->");
     }
+    
 }
 
 void Imprime(TipoLista *Tabela, int M) {
