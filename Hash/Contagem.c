@@ -93,10 +93,9 @@ void constroiIndiceInvertidoHASH(char* arqTexto[], int numArqs, TipoLista **Tabe
             continue;
         }
 
-        int idDoc = (i+1);  // define o identificador do documento
+        int idDoc = i;  // define o identificador do documento
         ProcessaArquivo(arq, idDoc, p, *Tabela_ptr, M, comparacoesInsercaoHash);
 
-        
         fclose(arq);
     }
 

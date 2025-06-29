@@ -6,7 +6,7 @@
 
 int main() {
     char* arqTexto[] = {
-        "POCs/ASTSecurer_Vulnerability.txt", 
+        "POCs/Navigation_MyMobiConf.txt", 
         "POCs/Beef_Cattle.txt",
         "POCs/Crime_Twitter.txt",
         "POCs/Issue_Tracking.txt"
@@ -44,17 +44,9 @@ int main() {
                 constroiIndiceInvertidoPATRICIA(&arvorePatricia, arqTexto, numArqs, &comparacoesInsercaoPatricia);
                 break;
             case 3:
-                break;
-            case 4:
-                /*char palavra[32];
-                printf("Digite a palavra a ser pesquisada: ");
-                scanf("%s", palavra);
-                Patricia_Pesquisa(palavra, arvorePatricia, &comparacoesBuscaPatricia);
-                */break;
-            case 5:
-                PesquisaNaTabelaHash(TabelaHash, M, p, &comparacoes);
-                printf("Total de comparacoes da palavra buscada na Hash: %d\n", comparacoes);
-                
+                //PesquisaNaTabelaHash(TabelaHash, M, p, &comparacoes);
+                //printf("Total de comparacoes da palavra buscada na Hash: %d\n", comparacoes);
+
                 if (TabelaHash != NULL) {
                     // 1. Chama a função para obter o vetor de contagens.
                     int* contagens = TamanhoHASH(TabelaHash, M, numArqs);
@@ -73,6 +65,14 @@ int main() {
                 } else {
                     printf("\nA Tabela Hash ainda não foi construída. Use a opção 1 primeiro.\n");
                 }
+                break;
+            case 4:
+                /*char palavra[32];
+                printf("Digite a palavra a ser pesquisada: ");
+                scanf("%s", palavra);
+                Patricia_Pesquisa(palavra, arvorePatricia, &comparacoesBuscaPatricia);
+                */break;
+            case 5:
 
             case 0:
                 if (TabelaHash != NULL)
