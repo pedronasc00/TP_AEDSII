@@ -39,16 +39,11 @@ int main() {
         switch (opcao) {
             case 1:
                 constroiIndiceInvertidoHASH(arqTexto, numArqs, &TabelaHash, &M, p, &comparacoesInsercaoHash);
-
-
-
                 break;
             case 2:
                 constroiIndiceInvertidoPATRICIA(&arvorePatricia, arqTexto, numArqs, &comparacoesInsercaoPatricia);
-                Patricia_ImprimeArvore(arvorePatricia);
                 break;
             case 3:
-                ImprimeHashOrdenado(TabelaHash, M);
                 break;
             case 4:
                 /*char palavra[32];
@@ -59,8 +54,25 @@ int main() {
             case 5:
                 PesquisaNaTabelaHash(TabelaHash, M, p, &comparacoes);
                 printf("Total de comparacoes da palavra buscada na Hash: %d\n", comparacoes);
-                break;
+                
+                if (TabelaHash != NULL) {
+                    // 1. Chama a função para obter o vetor de contagens.
+                    int* contagens = TamanhoHASH(TabelaHash, M, numArqs);
 
+                    if (contagens != NULL) {
+                        // 2. Imprime os resultados.
+                        printf("\n---------- Total de Termos por Documento ----------\n");
+                        for (int i = 0; i < numArqs; i++) {
+                            printf("Documento %d (%s): %d termos\n", i + 1, arqTexto[i], contagens[i]);
+                        }
+                        printf("---------------------------------------------------\n");
+                        
+                        // 3. IMPORTANTE: Libera a memória alocada pela função.
+                        free(contagens);
+                    }
+                } else {
+                    printf("\nA Tabela Hash ainda não foi construída. Use a opção 1 primeiro.\n");
+                }
 
             case 0:
                 if (TabelaHash != NULL)

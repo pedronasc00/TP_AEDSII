@@ -6,7 +6,6 @@
 
 #define MAX_PALAVRA 32
 
-
 // --- Função de Tokenização ---
 void TokenizacaoTermo_Pat(const char *buffer, char *palavraLimpa) {
     int i = 0, j = 0;
@@ -46,5 +45,9 @@ void constroiIndiceInvertidoPATRICIA(TipoArvore *arvorePatricia, char *arqTexto[
 
         fclose(arq);
     }
+    printf("\n----------------------\n");
+    int cont = 0;
+    IndiceInvertidoPatricia(*arvorePatricia, &cont);
+    printf("----------------------\n");
 }
 

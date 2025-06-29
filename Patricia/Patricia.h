@@ -42,7 +42,7 @@ TipoArvore Patricia_CriaNoExterno(TipoChavePatricia k, int idDoc);
 
 TipoArvore Patricia_Insere(TipoChavePatricia k, TipoArvore t, int idDoc, int *comp);
 void Patricia_Pesquisa(TipoChavePatricia k, TipoArvore t, int *comp);
-void Patricia_ImprimeArvore(TipoArvore t);
+void IndiceInvertidoPatricia(TipoArvore t, int* cont);
 void Patricia_LiberaArvore(TipoArvore *t);
 
 #endif

@@ -121,15 +121,15 @@ TipoArvore Patricia_Insere(TipoChavePatricia k, TipoArvore t, int idDoc, int *co
     return Patricia_InsereEntre(k, t, i, idDoc, comp);
 }
 
-void Patricia_ImprimeArvore(TipoArvore t) {
+void IndiceInvertidoPatricia(TipoArvore t, int* cont) {
     if (t != NULL) {
         if (Patricia_EhExterno(t)) {
-            printf("Palavra: %s -> ", t->NO.NExterno.Palavra);
+            printf("%d: %s -> ", (*cont)++, t->NO.NExterno.Palavra);
             LImprime(&(t->NO.NExterno.Ocorrencias));
             printf("\n");
         } else {
-            Patricia_ImprimeArvore(t->NO.NInterno.Esq);
-            Patricia_ImprimeArvore(t->NO.NInterno.Dir);
+            IndiceInvertidoPatricia(t->NO.NInterno.Esq, cont);
+            IndiceInvertidoPatricia(t->NO.NInterno.Dir, cont);
         }
     }
 }

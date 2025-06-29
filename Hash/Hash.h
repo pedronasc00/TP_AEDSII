@@ -44,9 +44,7 @@ TipoItem* PesquisaItem(TipoChave Ch, TipoPesos p, TipoLista *Tabela, int M, int 
 void Ins(TipoItem x, TipoLista *Lista);
 int Insere(TipoItem x, TipoPesos p, TipoLista *Tabela, int M, int *totalComparacoes);
 void Retira(TipoItem x, TipoPesos p, TipoLista *Tabela, int M);
-void Imp(TipoLista Lista);
-void LImprimeHASH(LLista *tLista);
-void Imprime(TipoLista *Tabela, int M);
+void IndiceInvertidoHash(TipoLista* TabelaHash, int M);
 void LerPalavra(char *p, int Tam);
 
 void ProcessaArquivo(FILE* arq, int idDoc, TipoPesos p, TipoLista *Tabela, int M, int *totalComparacoes);

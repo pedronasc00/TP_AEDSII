@@ -74,8 +74,7 @@ int calculaM(int totalPalavrasUnicas, float fatorCarga) {
     
 }
 
-void constroiIndiceInvertidoHASH(char* arqTexto[], int numArqs, TipoLista **Tabela_ptr, int *M_ptr, TipoPesos p, int *comparacoesInsercaoHash)
-{
+void constroiIndiceInvertidoHASH(char* arqTexto[], int numArqs, TipoLista **Tabela_ptr, int *M_ptr, TipoPesos p, int *comparacoesInsercaoHash) {
     *comparacoesInsercaoHash = 0;
     int totalUnicas = ContaPalavrasUnicas(arqTexto, numArqs);
     int M = calculaM(totalUnicas, FatorCarga);
@@ -94,15 +93,58 @@ void constroiIndiceInvertidoHASH(char* arqTexto[], int numArqs, TipoLista **Tabe
             continue;
         }
 
-        int idDoc = i;  // define o identificador do documento
+        int idDoc = (i+1);  // define o identificador do documento
         ProcessaArquivo(arq, idDoc, p, *Tabela_ptr, M, comparacoesInsercaoHash);
 
+        
         fclose(arq);
     }
 
     *M_ptr = M;
-    Imprime(*Tabela_ptr, M);
-    
-    printf("Total de palavras unicas: %d\n", totalUnicas);
-    printf("Tamanho da Tabela Hash: %d\n", M);
+    IndiceInvertidoHash(*Tabela_ptr, M);
 }
+//Verifica a quantidade de termos na Tabela HASH por Documento lido
+int* TamanhoHASH(TipoLista* Tabela, int M, int numArqs) {
+    if (Tabela == NULL || M == 0) {
+        return 0;
+    }
+
+    int *Termo_perDocs = (int*)calloc(numArqs, sizeof(int));
+
+    for (int i = 0; i < M; i++) {
+        TipoApontador pTermo = Tabela[i].Primeiro->Prox;
+
+        while (pTermo != NULL) {
+            ApontadorLista pIndice = pTermo->Item.idPalavra.pPrimeiro->pProx;
+            
+            while (pIndice != NULL) {
+                int idDoc = pIndice->idTermo.idDoc;
+                int qtde = pIndice->idTermo.qtde;
+
+                if (idDoc >= 0 && idDoc < numArqs) {
+                    Termo_perDocs[idDoc] += qtde;
+                }
+                pIndice = pIndice->pProx;
+            }
+            pTermo = pTermo->Prox;
+        }
+    }
+    return Termo_perDocs;
+}
+
+/*void RelevanciaHASH(TipoLista* Tabela) {
+    int Num_termos;
+    char** Vetor_termos;
+
+    printf("Quantidade de Termos para Pesquisa:");
+    scanf("%d", &Num_termos);
+    Vetor_termos = (char**)malloc(Num_termos * sizeof(char*));
+
+    for (int i = 0; i < Num_termos; i++) {
+        char* termo;
+        printf("Termo:");
+        scanf("%19s", termo);
+
+        strcpy(Vetor_termos[i], termo);
+    }
+}*/

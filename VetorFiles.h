@@ -27,5 +27,4 @@ void LiberaVetor(VFile* vTermo);
 void TokenizacaoTermo(char* in, char* out);
 int compare(const void *a, const void *b);
 ApontadorLista BuscaIndice(LLista* listaI, int idDoc);
-void ImprimeHashOrdenado(struct TipoLista* TabelaHash, int M);
 #endif

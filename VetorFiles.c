@@ -87,7 +87,7 @@ void ImprimeVetor(VFile vTermo) {
     printf("\n-------------------------\n");
     printf("Total de palavras: %d\n ", vTermo.tamanho);
     for (int i = 0; i < vTermo.tamanho; i++) {
-        printf("%s ", vTermo.VetorF[i].Palavra);
+        printf("%d: %s ", i, vTermo.VetorF[i].Palavra);
         LImprime(&vTermo.VetorF[i].idPalavra);
         printf("\n");
     }
@@ -110,32 +110,4 @@ void LiberaVetor(VFile* vTermo) {
     free(vTermo->VetorF); 
     vTermo->VetorF = NULL; 
     vTermo->tamanho = 0;
-}
-
-void ImprimeHashOrdenado(TipoLista* TabelaHash, int M){
-    if (TabelaHash == NULL || M == 0) {
-        return;
-    }
-    
-    VFile vTermo;
-    InicalizaVetor(&vTermo);
-
-    for (int i = 0; i < M; i++) {
-        TipoApontador pAux = TabelaHash[i].Primeiro->Prox;
-
-        while (pAux != NULL) {
-            vTermo.tamanho++;
-            vTermo.VetorF = (Word*)realloc(vTermo.VetorF, vTermo.tamanho * sizeof(Word));
-
-            Word* novoTermo = &vTermo.VetorF[vTermo.tamanho - 1];
-            strcpy(novoTermo->Palavra, pAux->Item.Chave);
-            novoTermo->idPalavra = pAux->Item.idPalavra;
-
-            pAux = pAux->Prox;
-        }
-    }
-    
-    qsort(vTermo.VetorF, vTermo.tamanho, sizeof(Word), compare);
-    ImprimeVetor(vTermo);
-    free(vTermo.VetorF);
 }

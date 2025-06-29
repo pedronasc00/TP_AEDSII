@@ -1,4 +1,4 @@
-#include "Hash.h"
+#include "Hash/Hash.h"
 
 void THFLVazia(TipoLista *Lista) {
     Lista->Primeiro = (TipoCelula *)malloc(sizeof(TipoCelula));
@@ -64,14 +64,13 @@ TipoApontador Pesquisa(TipoChave Ch, TipoPesos p, TipoLista *Tabela, int M, int 
     if (THVazia(Tabela[i])) return NULL;
 
     Ap = Tabela[i].Primeiro;
-    while (Ap->Prox->Prox != NULL && strncmp(Ch, Ap->Prox->Item.Chave, sizeof(TipoChave))) {
+    while (Ap->Prox->Prox != NULL && strcmp(Ch, Ap->Prox->Item.Chave) != 0) {
         Ap = Ap->Prox;
-        (*comparacoes)++;
-       
+        (*comparacoes)++; 
     }
 
     (*comparacoes)++;  // conta a última comparação
-    if (!strncmp(Ch, Ap->Prox->Item.Chave, sizeof(TipoChave)))
+    if (strcmp(Ch, Ap->Prox->Item.Chave) == 0)
         return Ap;
 
     return NULL;
@@ -96,8 +95,6 @@ int Insere(TipoItem x, TipoPesos p, TipoLista *Tabela, int M, int *totalComparac
     }
 }
 
-
-
 void Retira(TipoItem x, TipoPesos p, TipoLista *Tabela, int M) {
     int comparacoes;
     TipoApontador Ap = Pesquisa(x.Chave, p, Tabela, M,&comparacoes);
@@ -106,33 +103,33 @@ void Retira(TipoItem x, TipoPesos p, TipoLista *Tabela, int M) {
     else
         Ret(Ap, &Tabela[h(x.Chave, p, M)], &x);
 }
-void LImprimeHASH(LLista *tLista) {
-    ApontadorLista pAux = NULL;
-    pAux = tLista->pPrimeiro->pProx;
-    while (pAux != NULL) {
-        printf("<%d, %d> ", pAux->idTermo.qtde, (pAux->idTermo.idDoc)+1);
-        pAux = pAux->pProx;
-    }
-}
-void Imp(TipoLista Lista) {
-    TipoApontador Aux = Lista.Primeiro->Prox;
-    while (Aux != NULL) {
-        printf(" %s ", Aux->Item.Chave);
-        LImprimeHASH(&Aux->Item.idPalavra);
-        Aux = Aux->Prox;
-        if(Aux!= NULL) printf ("->");
+
+void IndiceInvertidoHash(TipoLista* TabelaHash, int M){
+    if (TabelaHash == NULL || M == 0) {
+        return;
     }
     
-}
+    VFile vTermo;
+    InicalizaVetor(&vTermo);
 
-void Imprime(TipoLista *Tabela, int M) {
     for (int i = 0; i < M; i++) {
-        printf("%d: ", i);
-        if (!THVazia(Tabela[i]))
-            Imp(Tabela[i]);
-        putchar('\n');
+        TipoApontador pAux = TabelaHash[i].Primeiro->Prox;
+        while (pAux != NULL) {
+            vTermo.tamanho++;
+            Word* temp_pr = (Word*)realloc(vTermo.VetorF, vTermo.tamanho * sizeof(Word));
+            vTermo.VetorF = temp_pr;
+            Word* novoTermo = &vTermo.VetorF[vTermo.tamanho - 1];
+            strcpy(novoTermo->Palavra, pAux->Item.Chave);
+            novoTermo->idPalavra = pAux->Item.idPalavra;
+
+            pAux = pAux->Prox;
+        }
     }
-} 
+    
+    qsort(vTermo.VetorF, vTermo.tamanho, sizeof(Word), compare);
+    ImprimeVetor(vTermo);
+    free(vTermo.VetorF);
+}
 
 void LerPalavra(char *p, int Tam) {
     char c; int i, j = 0;

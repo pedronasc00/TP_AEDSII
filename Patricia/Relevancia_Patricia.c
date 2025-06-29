@@ -28,12 +28,7 @@ int ContaTermosDistintosNoDoc(TipoArvore arvore, int idDoc)
 }
 
 // Calcula e imprime a relevância dos documentos para uma consulta
-void CalculaRelevanciaPatricia(
-    TipoArvore arvore,
-    char **consulta,
-    int numTermosConsulta,
-    int numDocs)
-{
+void CalculaRelevanciaPatricia(TipoArvore arvore, char **consulta, int numTermosConsulta, int numDocs) {
     ResultadoRelevancia resultados[numDocs];
     printf("\n==== Calculando Relevância ====\n");
     // Inicializa resultados
@@ -43,8 +38,7 @@ void CalculaRelevanciaPatricia(
         resultados[i].relevancia = 0.0;
     }
     // Para cada termo da consulta
-    for (int t = 0; t < numTermosConsulta; t++)
-    {
+    for (int t = 0; t < numTermosConsulta; t++) {
         TipoArvore no = arvore;
         int teste;
         // Busca o termo na Patricia
