@@ -8,7 +8,7 @@ typedef struct idRelevancia{
     char nomeArquivo[100];
 }idRelevancia;
 
-int comparaRelevancia(const void *a, const void *b);
+int comparaRelevanciaHASH(const void *a, const void *b);
 void RelevanciaHASH(TipoLista* Tabela, int M, int numArqs, char* arqTexto[], TipoPesos p);
 
 #endif

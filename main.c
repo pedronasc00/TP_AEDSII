@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include "VetorFiles.h"
 #include "Hash/Contagem.h"
@@ -25,6 +26,7 @@ int main() {
     int comparacoesBuscaPatricia = 0;
 
     int opcao = 0;
+    char palavra[32];
     do {
         printf("\n==== Menu ====\n");
         printf("1 - Construir indice invertido (tabela hash)\n");
@@ -46,10 +48,11 @@ int main() {
                 RelevanciaHASH(TabelaHash, M, numArqs, arqTexto, p);
                 break;
             case 4:
-                char palavra[32];
+                
                 printf("Digite a palavra a ser pesquisada: ");
                 scanf("%s", palavra);
-                Patricia_Pesquisa(palavra, arvorePatricia, &comparacoesBuscaPatricia);
+               // Patricia_Pesquisa(palavra, arvorePatricia, &comparacoesBuscaPatricia);
+                RelevanciaPatricia(arvorePatricia, arqTexto,numArqs);
                 break;
             case 5:
 

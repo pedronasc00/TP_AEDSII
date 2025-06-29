@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int comparaRelevancia(const void *a, const void *b) {
+int comparaRelevanciaHASH(const void *a, const void *b) {
     idRelevancia *resA = (idRelevancia *)a;
     idRelevancia *resB = (idRelevancia *)b;
     if (resA->relevancia < resB->relevancia) return 1;
@@ -80,7 +80,7 @@ void RelevanciaHASH(TipoLista* Tabela, int M, int numArqs, char* arqTexto[], Tip
         }
     }
     
-    qsort(resultados, numArqs, sizeof(idRelevancia), comparaRelevancia);
+    qsort(resultados, numArqs, sizeof(idRelevancia), comparaRelevanciaHASH);
     printf("\n ---Relevancia dos Documentos (TF-IDF)--- \n");
     for (int i = 0; i < numArqs; i++)
     {
