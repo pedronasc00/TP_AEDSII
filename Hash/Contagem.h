@@ -1,6 +1,6 @@
 #ifndef CONTADOR_H
 #define CONTADOR_H
-#include "Hash/Hash.h"
+#include "Hash.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -13,8 +13,7 @@ int ContaPalavrasUnicas(char* arquivos[], int numArquivos);
 int calculaM(int totalPalavrasUnicas, float fatorCarga);
 int proximoPrimo(int n);
 void constroiIndiceInvertidoHASH(char* arqTexto[], int numArqs, TipoLista **Tabela_ptr, int *M_ptr, TipoPesos p, int *comparacoesInsercaoHash);
-int* TamanhoHASH(TipoLista* Tabela, int M, int numArqs);
-void RelevanciaHASH(TipoLista* Tabela); 
+int* TamanhoHASH_perDocs(TipoLista* Tabela, int M, int numArqs);
 
 
 #endif

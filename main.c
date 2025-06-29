@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include "VetorFiles.h"
-#include "Hash/Hash.h"
 #include "Hash/Contagem.h"
+#include "Hash/Hash.h"
+#include "Hash/RelevanciaHASH.h"
 #include "Patricia/Relevancia_Patricia.h"
 
 int main() {
@@ -16,7 +17,6 @@ int main() {
     TipoLista* TabelaHash = NULL;
     TipoPesos p;
     GeraPesos(p);
-    int comparacoes = 0;
     int comparacoesInsercaoHash = 0;
 
 
@@ -29,9 +29,8 @@ int main() {
         printf("\n==== Menu ====\n");
         printf("1 - Construir indice invertido (tabela hash)\n");
         printf("2 - Construir indice invertido (PATRICIA)\n");
-        printf("3 - Imprimir tabela ordenada\n");
+        printf("3 - Pesquisa e Relevancia (HASH)\n");
         printf("4 - Pesquisa na Patricia\n");
-        printf("5 - Pesquisa na Hash\n");
         printf("0 - Sair\n");
         printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
@@ -44,34 +43,14 @@ int main() {
                 constroiIndiceInvertidoPATRICIA(&arvorePatricia, arqTexto, numArqs, &comparacoesInsercaoPatricia);
                 break;
             case 3:
-                //PesquisaNaTabelaHash(TabelaHash, M, p, &comparacoes);
-                //printf("Total de comparacoes da palavra buscada na Hash: %d\n", comparacoes);
-
-                if (TabelaHash != NULL) {
-                    // 1. Chama a função para obter o vetor de contagens.
-                    int* contagens = TamanhoHASH(TabelaHash, M, numArqs);
-
-                    if (contagens != NULL) {
-                        // 2. Imprime os resultados.
-                        printf("\n---------- Total de Termos por Documento ----------\n");
-                        for (int i = 0; i < numArqs; i++) {
-                            printf("Documento %d (%s): %d termos\n", i + 1, arqTexto[i], contagens[i]);
-                        }
-                        printf("---------------------------------------------------\n");
-                        
-                        // 3. IMPORTANTE: Libera a memória alocada pela função.
-                        free(contagens);
-                    }
-                } else {
-                    printf("\nA Tabela Hash ainda não foi construída. Use a opção 1 primeiro.\n");
-                }
+                RelevanciaHASH(TabelaHash, M, numArqs, arqTexto, p);
                 break;
             case 4:
-                /*char palavra[32];
+                char palavra[32];
                 printf("Digite a palavra a ser pesquisada: ");
                 scanf("%s", palavra);
                 Patricia_Pesquisa(palavra, arvorePatricia, &comparacoesBuscaPatricia);
-                */break;
+                break;
             case 5:
 
             case 0:

@@ -2,7 +2,7 @@
 EXEC = teste
 
 # Arquivos fonte
-SRC =  VetorFiles.c Hash/Hash.c ListaIndice.c Hash/Contagem.c Patricia/Compara_Patricia.c Patricia/Patricia.c Patricia/Relevancia_Patricia.c main.c
+SRC =  VetorFiles.c ListaIndice.c Hash/Hash.c Hash/Contagem.c Hash/RelevanciaHASH.c Patricia/Compara_Patricia.c Patricia/Patricia.c Patricia/Relevancia_Patricia.c main.c
 
 # Compilador
 CC = gcc

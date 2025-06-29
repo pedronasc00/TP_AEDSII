@@ -194,31 +194,39 @@ void LiberaTabela(TipoLista *Tabela, int M) {
         }
     }
 }
-void PesquisaNaTabelaHash(TipoLista* TabelaHash, int M, TipoPesos p, int *comparacoes) {
-    *comparacoes = 0;
+void PesquisaNaTabelaHash(TipoLista* TabelaHash, char** vetorTermos, int numTermos, int M, TipoPesos p) {
+    int comparacoes = 0;
+    int termosEncontrados = 0;
+
     if (TabelaHash == NULL || M == 0) {
         printf("Tabela Hash nao foi criada ainda.\n");
         return;
     }
+    for (int i = 0; i < numTermos; i++)
+    {
+        int comp_termo = 0;
+        char* palavraBusca = vetorTermos[i];
+        
+        int indiceHash = h(palavraBusca, p, M);
+        TipoItem* itemAchado = PesquisaItem(palavraBusca, p, TabelaHash, M, &comparacoes);
+        //printf("Comparacoes realizadas: %d", *comparacoes);
 
-    char palavraBusca[N];
-    printf("Digite a palavra para pesquisa na tabela hash: ");
-    scanf("%s", palavraBusca);
+        if (itemAchado != NULL) {            
+            termosEncontrados++;
+            printf("\n%d: %s ", indiceHash, itemAchado->Chave);
 
-    int indiceHash = h(palavraBusca, p, M);
-    TipoItem* itemAchado = PesquisaItem(palavraBusca, p, TabelaHash, M, comparacoes);
-    //printf("Comparacoes realizadas: %d", *comparacoes);
-
-    if (itemAchado != NULL) {
-        printf("\n%d: %s ", indiceHash, itemAchado->Chave);
-
-        ApontadorLista pIndice = itemAchado->idPalavra.pPrimeiro->pProx;
-        while (pIndice != NULL) {
-            printf("<%d, %d> ", pIndice->idTermo.qtde, (pIndice->idTermo.idDoc)+1);
-            pIndice = pIndice->pProx;
+            ApontadorLista pIndice = itemAchado->idPalavra.pPrimeiro->pProx;
+            while (pIndice != NULL) {
+                printf("<%d, %d> ", pIndice->idTermo.qtde, (pIndice->idTermo.idDoc)+1);
+                pIndice = pIndice->pProx;
+            }
+            printf("\n");
+        } else {
+            printf("\nPalavra '%s' nao encontrada na tabela hash.\n", palavraBusca);
         }
-        printf("\n");
-    } else {
-        printf("Palavra '%s' nao encontrada na tabela hash.\n", palavraBusca);
+        comparacoes += comp_termo;
     }
+    printf("\nTermos encontrados: %d\n", termosEncontrados);
+    printf("Total de comparações realizadas: %d\n", comparacoes);
+    printf("---------------------------------\n");
 }

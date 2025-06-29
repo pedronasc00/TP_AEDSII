@@ -102,8 +102,9 @@ void constroiIndiceInvertidoHASH(char* arqTexto[], int numArqs, TipoLista **Tabe
     *M_ptr = M;
     IndiceInvertidoHash(*Tabela_ptr, M);
 }
+
 //Verifica a quantidade de termos na Tabela HASH por Documento lido
-int* TamanhoHASH(TipoLista* Tabela, int M, int numArqs) {
+int* TamanhoHASH_perDocs(TipoLista* Tabela, int M, int numArqs) {
     if (Tabela == NULL || M == 0) {
         return 0;
     }
@@ -130,20 +131,3 @@ int* TamanhoHASH(TipoLista* Tabela, int M, int numArqs) {
     }
     return Termo_perDocs;
 }
-
-/*void RelevanciaHASH(TipoLista* Tabela) {
-    int Num_termos;
-    char** Vetor_termos;
-
-    printf("Quantidade de Termos para Pesquisa:");
-    scanf("%d", &Num_termos);
-    Vetor_termos = (char**)malloc(Num_termos * sizeof(char*));
-
-    for (int i = 0; i < Num_termos; i++) {
-        char* termo;
-        printf("Termo:");
-        scanf("%19s", termo);
-
-        strcpy(Vetor_termos[i], termo);
-    }
-}*/
