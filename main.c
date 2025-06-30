@@ -8,28 +8,30 @@
 #include "Patricia/Compara_Patricia.h"
 #include "Patricia/Relevancia_Patricia.h"
 
-void lerArquivosEntrada(char*** arqTexto_ptr, int* numArqs_ptr);
+void lerArquivosEntrada(char ***arqTexto_ptr, int *numArqs_ptr);
 
-int main() {
-    char** arqTexto = NULL;
+int main()
+{
+    char **arqTexto = NULL;
     int numArqs = 0;
     lerArquivosEntrada(&arqTexto, &numArqs);
 
-    //HASH
-    TipoLista* TabelaHash = NULL;
+    // HASH
+    TipoLista *TabelaHash = NULL;
     int M = 0;
     TipoPesos p;
     GeraPesos(p);
     int comparacoesInsercaoHash = 0;
 
-    //PATRICIA
+    // PATRICIA
     TipoArvore arvorePatricia = NULL;
     int comparacoesInsercaoPatricia = 0;
     int comparacoesBuscaPatricia = 0;
 
     int opcao;
-    
-    do {
+
+    do
+    {
         printf("\n==== MENU PRINCIPAL ====\n");
         printf("1 - Construir Indice Invertido (tabela hash)\n");
         printf("2 - Construir Indice Invertido (PATRICIA)\n");
@@ -40,54 +42,51 @@ int main() {
         printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
 
-        switch (opcao) {
-            case 1:
-                constroiIndiceInvertidoHASH(arqTexto, numArqs, &TabelaHash, &M, p, &comparacoesInsercaoHash);
-                break;
-            case 2:
-                constroiIndiceInvertidoPATRICIA(&arvorePatricia, arqTexto, numArqs, &comparacoesInsercaoPatricia);
-                break;
-            case 3:
-                RelevanciaHASH(TabelaHash, M, numArqs, arqTexto, p);
-                break;
-            case 4:
-                int num;
-                printf("quantidade termos para pesquisa: ");
-                scanf("%d", &num);
+        switch (opcao)
+        {
+        case 1:
+            constroiIndiceInvertidoHASH(arqTexto, numArqs, &TabelaHash, &M, p, &comparacoesInsercaoHash);
+            break;
+        case 2:
+            constroiIndiceInvertidoPATRICIA(&arvorePatricia, arqTexto, numArqs, &comparacoesInsercaoPatricia);
+            break;
+        case 3:
+            RelevanciaHASH(TabelaHash, M, numArqs, arqTexto, p);
+            break;
+        case 4:
 
-                char palavra[20];
-                for (int i = 0; i < num; i++) {
-                    scanf("%19s", palavra);
-                    Patricia_Pesquisa(palavra, arvorePatricia, &comparacoesBuscaPatricia);
-                }
-                
-                RelevanciaPatricia(arvorePatricia, arqTexto,numArqs);
+            PesquisarPatricia(arvorePatricia, &comparacoesBuscaPatricia);
+
+            RelevanciaPatricia(arvorePatricia, arqTexto, numArqs);
+            break;
+
+        case 5:
+            if (comparacoesInsercaoHash == 0 || comparacoesInsercaoPatricia == 0)
+            {
+                printf("Erro: Construa os Indices da HASH e PATRICIA\n");
                 break;
-            case 5:
-                if (comparacoesInsercaoHash == 0 || comparacoesInsercaoPatricia == 0){
-                    printf("Erro: Construa os Indices da HASH e PATRICIA\n");
-                    break;
-                }
-                printf("Numero de comparacoes na inserção (HASH): %d\n", comparacoesInsercaoHash);
-                printf("Numero de comparacoes na inserção (PATRICIA): %d\n", comparacoesInsercaoPatricia);
-            case 0:
-                if (TabelaHash != NULL)
-                    LiberaTabela(TabelaHash, M);
-                if (arvorePatricia != NULL){
-                    Patricia_LiberaArvore(&arvorePatricia);
-                }
-                printf("Saindo...\n");
-                break;
-            default:
-                printf("Opcao invalida. Tente novamente.\n");
+            }
+            printf("Numero de comparacoes na inserção (HASH): %d\n", comparacoesInsercaoHash);
+            printf("Numero de comparacoes na inserção (PATRICIA): %d\n", comparacoesInsercaoPatricia);
+        case 0:
+            if (TabelaHash != NULL)
+                LiberaTabela(TabelaHash, M);
+            if (arvorePatricia != NULL)
+            {
+                Patricia_LiberaArvore(&arvorePatricia);
+            }
+            printf("Saindo...\n");
+            break;
+        default:
+            printf("Opcao invalida. Tente novamente.\n");
         }
     } while (opcao != 0);
 
-    //Imprime a quantidade de comparações realizadas na Patricia
+    // Imprime a quantidade de comparações realizadas na Patricia
     printf("\n==== Resultados ====\n");
     printf("Total de comparacoes de insercao na Patricia: %d\n", comparacoesInsercaoPatricia);
     printf("Total de comparacoes de busca na Patricia: %d\n", comparacoesBuscaPatricia);
-    //printf("Total de comparacoes de insercao na Patricia: %d\n", comparacoesInsercaoPatricia);
+    // printf("Total de comparacoes de insercao na Patricia: %d\n", comparacoesInsercaoPatricia);
     printf("Total de comparacoes nas insercoes (HASH): %d\n", comparacoesInsercaoHash);
 
     printf("=======================================\n");
@@ -95,26 +94,32 @@ int main() {
     return 0;
 }
 
-void lerArquivosEntrada(char*** arqTexto_ptr, int* numArqs_ptr) {
+void lerArquivosEntrada(char ***arqTexto_ptr, int *numArqs_ptr)
+{
     printf("Arquivo de Entrada: ");
-    
+
     char arq[40];
     scanf("%39s", arq);
-    FILE* arqEntrada = fopen(arq, "r");
+    FILE *arqEntrada = fopen(arq, "r");
 
-    if (arqEntrada == NULL) {return;}
-    
-    fscanf(arqEntrada, "%d", numArqs_ptr);
-    if (*numArqs_ptr < 0 || numArqs_ptr == NULL) {
+    if (arqEntrada == NULL)
+    {
         return;
     }
-    
-    *arqTexto_ptr = (char**)malloc(*numArqs_ptr * sizeof(char*));
+
+    fscanf(arqEntrada, "%d", numArqs_ptr);
+    if (*numArqs_ptr < 0 || numArqs_ptr == NULL)
+    {
+        return;
+    }
+
+    *arqTexto_ptr = (char **)malloc(*numArqs_ptr * sizeof(char *));
 
     char buffer[50];
-    for (int i = 0; i < *numArqs_ptr; i++) {
+    for (int i = 0; i < *numArqs_ptr; i++)
+    {
         fscanf(arqEntrada, "%49s", buffer);
-        (*arqTexto_ptr)[i] = strdup(buffer); 
+        (*arqTexto_ptr)[i] = strdup(buffer);
     }
     fclose(arqEntrada);
 }
