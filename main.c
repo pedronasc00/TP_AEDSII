@@ -1,38 +1,41 @@
-
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "VetorFiles.h"
-#include "Hash/Contagem.h"
 #include "Hash/Hash.h"
+#include "Hash/Contagem.h"
 #include "Hash/RelevanciaHASH.h"
+#include "Patricia/Compara_Patricia.h"
 #include "Patricia/Relevancia_Patricia.h"
 
+void lerArquivosEntrada(char*** arqTexto_ptr, int* numArqs_ptr);
+
 int main() {
-    char* arqTexto[] = {
-        "POCs/Navigation_MyMobiConf.txt", 
-        "POCs/Beef_Cattle.txt",
-        "POCs/Crime_Twitter.txt",
-        "POCs/Issue_Tracking.txt"
-    };
-    int numArqs = sizeof(arqTexto) / sizeof(arqTexto[0]);
-    int M = 0;
+    char** arqTexto = NULL;
+    int numArqs = 0;
+    lerArquivosEntrada(&arqTexto, &numArqs);
+
+    //HASH
     TipoLista* TabelaHash = NULL;
+    int M = 0;
     TipoPesos p;
     GeraPesos(p);
     int comparacoesInsercaoHash = 0;
 
-
+    //PATRICIA
     TipoArvore arvorePatricia = NULL;
     int comparacoesInsercaoPatricia = 0;
     int comparacoesBuscaPatricia = 0;
 
-    int opcao = 0;
-    char palavra[32];
+    int opcao;
+    
     do {
-        printf("\n==== Menu ====\n");
-        printf("1 - Construir indice invertido (tabela hash)\n");
-        printf("2 - Construir indice invertido (PATRICIA)\n");
+        printf("\n==== MENU PRINCIPAL ====\n");
+        printf("1 - Construir Indice Invertido (tabela hash)\n");
+        printf("2 - Construir Indice Invertido (PATRICIA)\n");
         printf("3 - Pesquisa e Relevancia (HASH)\n");
-        printf("4 - Pesquisa na Patricia\n");
+        printf("4 - Pesquisa e Relevancia (PATRICIA)\n");
+        printf("5 - Estatistica de Comparação\n");
         printf("0 - Sair\n");
         printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
@@ -48,27 +51,29 @@ int main() {
                 RelevanciaHASH(TabelaHash, M, numArqs, arqTexto, p);
                 break;
             case 4:
+                int num;
+                printf("quantidade termos para pesquisa: ");
+                scanf("%d", &num);
+
+                char palavra[20];
+                for (int i = 0; i < num; i++) {
+                    scanf("%19s", palavra);
+                    Patricia_Pesquisa(palavra, arvorePatricia, &comparacoesBuscaPatricia);
+                }
                 
-                printf("Digite a palavra a ser pesquisada: ");
-                scanf("%s", palavra);
-               // Patricia_Pesquisa(palavra, arvorePatricia, &comparacoesBuscaPatricia);
                 RelevanciaPatricia(arvorePatricia, arqTexto,numArqs);
                 break;
             case 5:
-
+                if (comparacoesInsercaoHash == 0 || comparacoesInsercaoPatricia == 0){
+                    printf("Erro: Construa os Indices da HASH e PATRICIA\n");
+                    break;
+                }
+                printf("Numero de comparacoes na inserção (HASH): %d\n", comparacoesInsercaoHash);
+                printf("Numero de comparacoes na inserção (PATRICIA): %d\n", comparacoesInsercaoPatricia);
             case 0:
                 if (TabelaHash != NULL)
                     LiberaTabela(TabelaHash, M);
                 if (arvorePatricia != NULL){
-                    
-                    //Isso aqui é so um teste pro calculo da relevancia, se quiser pode apagar ou mudar
-                    //Não sei se ta funcionando
-                    char *consulta[] = {"the", "beef"};
-                    int numTermosConsulta = 2;
-
-                    CalculaRelevanciaPatricia(arvorePatricia, consulta, numTermosConsulta, numArqs);
-
-
                     Patricia_LiberaArvore(&arvorePatricia);
                 }
                 printf("Saindo...\n");
@@ -88,4 +93,28 @@ int main() {
     printf("=======================================\n");
 
     return 0;
+}
+
+void lerArquivosEntrada(char*** arqTexto_ptr, int* numArqs_ptr) {
+    printf("Arquivo de Entrada: ");
+    
+    char arq[40];
+    scanf("%39s", arq);
+    FILE* arqEntrada = fopen(arq, "r");
+
+    if (arqEntrada == NULL) {return;}
+    
+    fscanf(arqEntrada, "%d", numArqs_ptr);
+    if (*numArqs_ptr < 0 || numArqs_ptr == NULL) {
+        return;
+    }
+    
+    *arqTexto_ptr = (char**)malloc(*numArqs_ptr * sizeof(char*));
+
+    char buffer[50];
+    for (int i = 0; i < *numArqs_ptr; i++) {
+        fscanf(arqEntrada, "%49s", buffer);
+        (*arqTexto_ptr)[i] = strdup(buffer); 
+    }
+    fclose(arqEntrada);
 }

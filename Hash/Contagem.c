@@ -119,10 +119,9 @@ int* TamanhoHASH_perDocs(TipoLista* Tabela, int M, int numArqs) {
             
             while (pIndice != NULL) {
                 int idDoc = pIndice->idTermo.idDoc;
-                int qtde = pIndice->idTermo.qtde;
 
                 if (idDoc >= 0 && idDoc < numArqs) {
-                    Termo_perDocs[idDoc] += qtde;
+                    Termo_perDocs[idDoc] += 1;
                 }
                 pIndice = pIndice->pProx;
             }

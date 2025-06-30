@@ -50,7 +50,7 @@ void Patricia_Pesquisa(TipoChavePatricia k, TipoArvore t, int *comp) {
     if (Patricia_EhExterno(t)) {
         (*comp)++; // Comparação de string na folha
         if (strcmp(k, t->NO.NExterno.Palavra) == 0) {
-            printf("Palavra '%s' encontrada nas ocorrencias: ", k);
+            printf("Palavra '%s' ", k);
             LImprime(&(t->NO.NExterno.Ocorrencias));
             printf("\n");
         } else {
