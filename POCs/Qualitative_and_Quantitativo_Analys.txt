@@ -1,0 +1,3 @@
+Qualitative and Quantitative Analysis on the Influence of Diversity on the Productivity of Agile Teams: A Study in the Industry
+
+This article investigates the influence of diversity on the productivity of teams using agile methodologies and also on the quality of the artifacts produced. For this purpose, a qualitative and quantitative research was conducted, in the industry context, involving four teams with different diversity profiles. The study used two data collection methods: a questionnaire organized into three dimensions and metrics applied to data from a development support tool. The results showed that the more diverse teams presented better productivity and quality indicators in their products.

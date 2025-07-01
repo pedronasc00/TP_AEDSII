@@ -55,7 +55,7 @@ int main()
             break;
         case 4:
 
-            PesquisarPatricia(arvorePatricia, &comparacoesBuscaPatricia);
+            //PesquisarPatricia(arvorePatricia, &comparacoesBuscaPatricia);
 
             RelevanciaPatricia(arvorePatricia, arqTexto, numArqs);
             break;
@@ -71,8 +71,7 @@ int main()
         case 0:
             if (TabelaHash != NULL)
                 LiberaTabela(TabelaHash, M);
-            if (arvorePatricia != NULL)
-            {
+            if (arvorePatricia != NULL) {
                 Patricia_LiberaArvore(&arvorePatricia);
             }
             printf("Saindo...\n");

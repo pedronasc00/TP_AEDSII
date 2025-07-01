@@ -1,0 +1,3 @@
+Analysis of a secure route solution for urban collectives centered on the user
+
+Studies on mobility flows have become increasingly relevant due to the expressive increase in data collection devices and applications. Despite this, there are few works that address such a topic, besides tools that help in this aspect. In this work, a tool was implemented that seeks to facilitate studies related to mobility flow, in addition to demonstrating its application in a case study, evaluating the impact that the implementation of secure routes causes in the city of São Paulo. With the results, it is noticed that this solution can improve studies already done in the area of mobility, bringing more detail about the changes made, and how this impact reflects on displacements.

@@ -1,0 +1,2 @@
+Detection of Melanoma Skin Cancer using Digital Image Processing Techniques and Artificial Neural Networks.
+Skin cancer is one of the most common types of cancer in Brazil; among them is melanoma, a type of malignant tumor responsible for many deaths. The present work aims to detect melanomas through digital image processing by performing analysis on symmetry, color, and border irregularity, and classifying them using artificial neural networks.
