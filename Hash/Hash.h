@@ -6,7 +6,7 @@
 #include <sys/time.h>
 #include <string.h>
 #include <ctype.h>
-#include "VetorFiles.h"
+#include "IndiceInvertido/VetorFiles.h"
 
 #define N 20
 #define TAMALFABETO 256

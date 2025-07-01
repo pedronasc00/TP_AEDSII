@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "VetorFiles.h"
+#include "IndiceInvertido/VetorFiles.h"
 #include "Hash/Hash.h"
 #include "Hash/Contagem.h"
 #include "Hash/RelevanciaHASH.h"

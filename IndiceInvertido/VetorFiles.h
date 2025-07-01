@@ -1,6 +1,6 @@
 #ifndef VFILES_H
 #define VFILES_H
-#include "ListaIndice.h"
+#include "IndiceInvertido/ListaIndice.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

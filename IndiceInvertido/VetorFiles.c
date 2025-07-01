@@ -1,4 +1,4 @@
-#include "VetorFiles.h"
+#include "IndiceInvertido/VetorFiles.h"
 #include "Hash/Hash.h"
 
 void InicalizaVetor(VFile* vTermo){

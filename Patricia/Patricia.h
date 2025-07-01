@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../ListaIndice.h"  // Usa sua lista personalizada
+#include "IndiceInvertido/ListaIndice.h"  // Usa sua lista personalizada
 
 #define TAM_MAX_PALAVRA 32
 #define D (TAM_MAX_PALAVRA * 8) // Número máximo de bits

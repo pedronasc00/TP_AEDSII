@@ -1,4 +1,4 @@
-#include "ListaIndice.h"
+#include "IndiceInvertido/ListaIndice.h"
 
 void FLVazia(LLista *tLista)
 {
