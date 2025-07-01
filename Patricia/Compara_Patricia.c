@@ -6,7 +6,7 @@
 
 #define MAX_PALAVRA 32
 
-// --- Função de Tokenização ---
+// Limpa uma palavra, deixando apenas letras/números em minúsculo.
 void TokenizacaoTermo_Pat(const char *buffer, char *palavraLimpa) {
     int i = 0, j = 0;
     while (buffer[i] != '\0' && j < MAX_PALAVRA - 1) {
@@ -19,6 +19,7 @@ void TokenizacaoTermo_Pat(const char *buffer, char *palavraLimpa) {
 }
 
 
+// Cria o índice lendo todos os arquivos de texto.
 void constroiIndiceInvertidoPATRICIA(TipoArvore *arvorePatricia, char *arqTexto[], int numArq, int *comparacoesInsercaoPatricia) {
     for (int i = 0; i < numArq; i++) {
         FILE *arq = fopen(arqTexto[i], "r");
@@ -35,6 +36,7 @@ void constroiIndiceInvertidoPATRICIA(TipoArvore *arvorePatricia, char *arqTexto[
 
             if (strlen(palavraLimpa) == 0) continue;
 
+            // Insere a palavra tratada na árvore.
             *arvorePatricia = Patricia_Insere(
                 palavraLimpa,
                 *arvorePatricia,
@@ -47,7 +49,7 @@ void constroiIndiceInvertidoPATRICIA(TipoArvore *arvorePatricia, char *arqTexto[
     }
     printf("\n----------------------\n");
     int cont = 0;
+    // Imprime o índice criado.
     IndiceInvertidoPatricia(*arvorePatricia, &cont);
     printf("----------------------\n");
 }
-

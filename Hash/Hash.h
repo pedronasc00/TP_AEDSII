@@ -12,8 +12,9 @@
 #define TAMALFABETO 256
 
 typedef char TipoChave[N];
-typedef unsigned TipoPesos[N][TAMALFABETO];
+typedef unsigned TipoPesos[N][TAMALFABETO]; // Matriz de pesos para a função de hash.
 
+// O item guardado na tabela: a palavra e sua lista de ocorrências.
 typedef struct TipoItem {
     TipoChave Chave;
     LLista idPalavra;
@@ -22,11 +23,14 @@ typedef struct TipoItem {
 typedef unsigned int TipoIndice;
 
 typedef struct TipoCelula* TipoApontador;
+
+// Célula (nó) da lista de colisões da tabela hash.
 typedef struct TipoCelula {
     TipoItem Item;
     TipoApontador Prox;
 } TipoCelula;
 
+// A lista em si, usada para cada entrada da tabela hash.
 typedef struct TipoLista {
     TipoCelula *Primeiro, *Ultimo;
 } TipoLista;

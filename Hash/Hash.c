@@ -1,22 +1,27 @@
 #include "Hash/Hash.h"
+#include <sys/time.h> // Adicionado para gettimeofday
 
+// Inicia uma lista (de colisões) com um nó cabeça.
 void THFLVazia(TipoLista *Lista) {
     Lista->Primeiro = (TipoCelula *)malloc(sizeof(TipoCelula));
     Lista->Ultimo = Lista->Primeiro;
     Lista->Primeiro->Prox = NULL;
 } 
 
+// Verifica se a lista de colisões está vazia.
 short THVazia(TipoLista Lista) {
     return (Lista.Primeiro == Lista.Ultimo);
 }
 
+// Insere um item no fim da lista.
 void Ins(TipoItem x, TipoLista *Lista) {
     Lista->Ultimo->Prox = (TipoCelula *)malloc(sizeof(TipoCelula));
     Lista->Ultimo = Lista->Ultimo->Prox;
     Lista->Ultimo->Item = x;
     Lista->Ultimo->Prox = NULL;
-}  
+}   
 
+// Remove um item da lista.
 void Ret(TipoApontador p, TipoLista *Lista, TipoItem *Item) {
     TipoApontador q;
     if (THVazia(*Lista) || p == NULL || p->Prox == NULL) {
@@ -31,9 +36,11 @@ void Ret(TipoApontador p, TipoLista *Lista, TipoItem *Item) {
     free(q);
 }
 
+// Gera pesos aleatórios para a função de hash, garantindo boa distribuição das chaves.
 void GeraPesos(TipoPesos p) {
     int i, j;
     struct timeval semente;
+    // Usa o tempo atual com microsegundos para gerar uma semente única.
     gettimeofday(&semente, NULL); 
     srand((int)(semente.tv_sec + 1000000 * semente.tv_usec));
     for (i = 0; i < N; i++)
@@ -41,6 +48,7 @@ void GeraPesos(TipoPesos p) {
             p[i][j] = 1 + (int)(10000.0 * rand() / (RAND_MAX + 1.0));
 }
 
+// Calcula o índice da tabela hash para uma chave usando os pesos gerados.
 TipoIndice h(TipoChave Chave, TipoPesos p, int M) {
     int i;
     unsigned int Soma = 0; 
@@ -50,16 +58,18 @@ TipoIndice h(TipoChave Chave, TipoPesos p, int M) {
     return (Soma % M);
 }
 
+// Inicia todas as listas da tabela hash.
 void Inicializa(TipoLista *Tabela, int M) {
     for (int i = 0; i < M; i++)
         THFLVazia(&Tabela[i]);
 }
 
+// Busca uma chave na tabela e retorna o ponteiro para o item ANTERIOR a ela.
 TipoApontador Pesquisa(TipoChave Ch, TipoPesos p, TipoLista *Tabela, int M, int *comparacoes) {
     TipoIndice i = h(Ch, p, M);
     TipoApontador Ap;
 
-    *comparacoes = 0;  // inicia a contagem
+    *comparacoes = 0;   // inicia a contagem
 
     if (THVazia(Tabela[i])) return NULL;
 
@@ -69,13 +79,14 @@ TipoApontador Pesquisa(TipoChave Ch, TipoPesos p, TipoLista *Tabela, int M, int 
         (*comparacoes)++; 
     }
 
-    (*comparacoes)++;  // conta a última comparação
+    (*comparacoes)++;   // conta a última comparação
     if (strcmp(Ch, Ap->Prox->Item.Chave) == 0)
         return Ap;
 
     return NULL;
 }
 
+// Busca e retorna o ponteiro para o ITEM encontrado, usando a função Pesquisa.
 TipoItem* PesquisaItem(TipoChave Ch, TipoPesos p, TipoLista *Tabela, int M, int *comparacoes) {
     TipoApontador pAnterior = Pesquisa(Ch, p, Tabela, M, comparacoes);
     if (pAnterior != NULL)
@@ -83,6 +94,7 @@ TipoItem* PesquisaItem(TipoChave Ch, TipoPesos p, TipoLista *Tabela, int M, int 
     return NULL;
 }
 
+// Insere um item na tabela, se ele já não existir.
 int Insere(TipoItem x, TipoPesos p, TipoLista *Tabela, int M, int *totalComparacoes) {
     int comparacoes = 0;
     if (Pesquisa(x.Chave, p, Tabela, M, &comparacoes) == NULL) {
@@ -95,6 +107,7 @@ int Insere(TipoItem x, TipoPesos p, TipoLista *Tabela, int M, int *totalComparac
     }
 }
 
+// Remove um item da tabela hash.
 void Retira(TipoItem x, TipoPesos p, TipoLista *Tabela, int M) {
     int comparacoes;
     TipoApontador Ap = Pesquisa(x.Chave, p, Tabela, M,&comparacoes);
@@ -104,6 +117,7 @@ void Retira(TipoItem x, TipoPesos p, TipoLista *Tabela, int M) {
         Ret(Ap, &Tabela[h(x.Chave, p, M)], &x);
 }
 
+// Copia toda a tabela para um vetor, ordena e imprime o índice invertido.
 void IndiceInvertidoHash(TipoLista* TabelaHash, int M){
     if (TabelaHash == NULL || M == 0) {
         return;
@@ -112,6 +126,7 @@ void IndiceInvertidoHash(TipoLista* TabelaHash, int M){
     VFile vTermo;
     InicalizaVetor(&vTermo);
 
+    // Drena todos os itens da tabela hash para um vetor temporário.
     for (int i = 0; i < M; i++) {
         TipoApontador pAux = TabelaHash[i].Primeiro->Prox;
         while (pAux != NULL) {
@@ -126,13 +141,16 @@ void IndiceInvertidoHash(TipoLista* TabelaHash, int M){
         }
     }
     
+    // Ordena o vetor e o imprime, depois libera a memória.
     qsort(vTermo.VetorF, vTermo.tamanho, sizeof(Word), compare);
     ImprimeVetor(vTermo);
     free(vTermo.VetorF);
 }
 
+// Lê uma linha de texto do teclado.
 void LerPalavra(char *p, int Tam) {
     char c; int i, j = 0;
+    // fflush(stdin) é uma função não padronizada, pode não funcionar em todos os sistemas.
     fflush(stdin);
     while (((c = getchar()) != '\n') && j < Tam - 1)
         p[j++] = c;
@@ -142,6 +160,7 @@ void LerPalavra(char *p, int Tam) {
         p[i] = '\0';
 }
 
+// Lê palavras de um arquivo e as insere/atualiza na tabela hash.
 void ProcessaArquivo(FILE* arq, int idDoc, TipoPesos p, TipoLista *Tabela, int M, int *totalComparacoes) {
     if (arq == NULL) return;
     int comparacoes;
@@ -176,12 +195,14 @@ void ProcessaArquivo(FILE* arq, int idDoc, TipoPesos p, TipoLista *Tabela, int M
     }
 }
 
+// Libera toda a memória alocada pela tabela e suas listas aninhadas.
 void LiberaTabela(TipoLista *Tabela, int M) {
     for (int i = 0; i < M; i++) {
         TipoApontador pAtual = Tabela[i].Primeiro;
         while (pAtual != NULL) {
             TipoApontador pProximo = pAtual->Prox;
             if (pAtual != Tabela[i].Primeiro) {
+                // É preciso liberar também as sub-listas de ocorrências de cada item.
                 ApontadorLista pIndiceAtual = pAtual->Item.idPalavra.pPrimeiro;
                 while (pIndiceAtual != NULL) {
                     ApontadorLista pIndiceProximo = pIndiceAtual->pProx;
@@ -194,6 +215,7 @@ void LiberaTabela(TipoLista *Tabela, int M) {
         }
     }
 }
+// Realiza a busca de um ou mais termos na tabela e imprime os resultados.
 void PesquisaNaTabelaHash(TipoLista* TabelaHash, char** vetorTermos, int numTermos, int M, TipoPesos p, int* comparacoes) {
     int termosEncontrados = 0;
     
@@ -208,8 +230,8 @@ void PesquisaNaTabelaHash(TipoLista* TabelaHash, char** vetorTermos, int numTerm
         
         int indiceHash = h(palavraBusca, p, M);
         TipoItem* itemAchado = PesquisaItem(palavraBusca, p, TabelaHash, M, &comp_termo);
-        //printf("Comparacoes realizadas: %d", *comparacoes);
-        if (itemAchado != NULL) {            
+        
+        if (itemAchado != NULL) {           
             termosEncontrados++;
             printf("\n%d: %s ", indiceHash, itemAchado->Chave);
 

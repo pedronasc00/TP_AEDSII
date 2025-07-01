@@ -1,5 +1,7 @@
 #include "IndiceInvertido/VetorFiles.h"
 #include "Hash/Hash.h"
+#include <ctype.h>
+#include <string.h>
 
 void InicalizaVetor(VFile* vTermo){
     if (vTermo == NULL) return;
@@ -24,6 +26,7 @@ ApontadorLista BuscaIndice(LLista* listaI, int idDoc) {
     return NULL;
 }
 
+// Deixa a palavra "limpa": só letras e minúsculas.
 void TokenizacaoTermo(char* in, char* out) {
     int c_fim = 0;
     for (int i = 0; in[i] != '\0'; i++) {
@@ -39,16 +42,15 @@ void InsereTermo(VFile* vTermo, FILE* arq, int idDoc) {
     if (vTermo == NULL || arq == NULL) return;
     
     Indice novoIndice = {1, idDoc};
-    
     Chave buffer, termoToken;
 
     while (fscanf(arq, "%19s", buffer) != EOF) {
         TokenizacaoTermo(buffer, termoToken);
-        
         if (strlen(termoToken) == 0) continue; 
         
         Word chaveBusca;
         strcpy(chaveBusca.Palavra, termoToken);
+        // A palavra já existe no vetor?
         Word* verifTermo = (Word*)bsearch(&chaveBusca, vTermo->VetorF, vTermo->tamanho, sizeof(Word), compare);
 
         if (verifTermo != NULL) {
@@ -60,23 +62,22 @@ void InsereTermo(VFile* vTermo, FILE* arq, int idDoc) {
                 LInsere(&verifTermo->idPalavra, &novoIndice);
             }
         } else {
+            // Palavra nova: abre espaço no vetor, insere e reordena.
             vTermo->tamanho++;
-            
             Word* temp_pr = (Word*)realloc(vTermo->VetorF, vTermo->tamanho * sizeof(Word));
 
             if (temp_pr == NULL) {
                 LiberaVetor(vTermo);
                 exit(EXIT_FAILURE);
             }
-            
             vTermo->VetorF = temp_pr;
 
             Word* novoTermo = &vTermo->VetorF[vTermo->tamanho - 1];
             strcpy(novoTermo->Palavra, termoToken);
-
             FLVazia(&novoTermo->idPalavra);
             LInsere(&novoTermo->idPalavra, &novoIndice);
 
+            // Reordena pra busca binária da próxima vez funcionar.
             qsort(vTermo->VetorF, vTermo->tamanho, sizeof(Word), compare); 
         }
     }
@@ -96,6 +97,8 @@ void ImprimeVetor(VFile vTermo) {
 
 void LiberaVetor(VFile* vTermo) {
     if (vTermo == NULL) return;
+
+    // 1. Libera as listas de ocorrências de cada palavra.
     for (int i = 0; i < vTermo->tamanho; i++) {
         ApontadorLista temp, pAux = vTermo->VetorF[i].idPalavra.pPrimeiro;
         if (pAux == NULL) continue;
@@ -107,6 +110,7 @@ void LiberaVetor(VFile* vTermo) {
         }
     }
     
+    // 2. Libera o vetor principal.
     free(vTermo->VetorF); 
     vTermo->VetorF = NULL; 
     vTermo->tamanho = 0;
