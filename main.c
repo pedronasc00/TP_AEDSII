@@ -22,6 +22,7 @@ int main()
     TipoPesos p;
     GeraPesos(p);
     int comparacoesInsercaoHash = 0;
+    int comparacoesBuscaHash = 0;
 
     // PATRICIA
     TipoArvore arvorePatricia = NULL;
@@ -51,23 +52,25 @@ int main()
             constroiIndiceInvertidoPATRICIA(&arvorePatricia, arqTexto, numArqs, &comparacoesInsercaoPatricia);
             break;
         case 3:
-            RelevanciaHASH(TabelaHash, M, numArqs, arqTexto, p);
+            RelevanciaHASH(TabelaHash, M, numArqs, arqTexto, p, &comparacoesBuscaHash);
             break;
         case 4:
-
-            //PesquisarPatricia(arvorePatricia, &comparacoesBuscaPatricia);
-
-            RelevanciaPatricia(arvorePatricia, arqTexto, numArqs);
+            RelevanciaPatricia(arvorePatricia, arqTexto, numArqs, &comparacoesBuscaPatricia);
             break;
-
         case 5:
             if (comparacoesInsercaoHash == 0 || comparacoesInsercaoPatricia == 0)
             {
                 printf("Erro: Construa os Indices da HASH e PATRICIA\n");
                 break;
             }
+            printf("\n==== Estatisticas de Comparacao ====\n");
+            printf("Tabela Hash:\n");
             printf("Numero de comparacoes na inserção (HASH): %d\n", comparacoesInsercaoHash);
+            printf("Numero de comparacoes na busca (HASH): %d\n", comparacoesBuscaHash);
+            printf("\n");
+            printf("Tabela PATRICIA:\n");
             printf("Numero de comparacoes na inserção (PATRICIA): %d\n", comparacoesInsercaoPatricia);
+            printf("Numero de comparacoes na busca (PATRICIA): %d\n", comparacoesBuscaPatricia);
         case 0:
             if (TabelaHash != NULL)
                 LiberaTabela(TabelaHash, M);
@@ -80,16 +83,6 @@ int main()
             printf("Opcao invalida. Tente novamente.\n");
         }
     } while (opcao != 0);
-
-    // Imprime a quantidade de comparações realizadas na Patricia
-    printf("\n==== Resultados ====\n");
-    printf("Total de comparacoes de insercao na Patricia: %d\n", comparacoesInsercaoPatricia);
-    printf("Total de comparacoes de busca na Patricia: %d\n", comparacoesBuscaPatricia);
-    // printf("Total de comparacoes de insercao na Patricia: %d\n", comparacoesInsercaoPatricia);
-    printf("Total de comparacoes nas insercoes (HASH): %d\n", comparacoesInsercaoHash);
-
-    printf("=======================================\n");
-
     return 0;
 }
 

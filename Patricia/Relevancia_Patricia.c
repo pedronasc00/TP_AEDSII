@@ -111,28 +111,33 @@ void CalculaRelevanciaPatricia(TipoArvore arvore, char **consulta, int numTermos
         }
     }
 }
-void RelevanciaPatricia(TipoArvore arvore, char* arqtexto[], int numDocs){
+
+
+void RelevanciaPatricia(TipoArvore arvore, char* arqtexto[], int numDocs, int *comparacoes){
     if (arvore == NULL || numDocs == 0) {
         printf("Árvore Patricia vazia ou número de documentos inválido.\n");
         return;
     }
+
     int num_termos;
-    printf("Digite a quantidade de termos: \n");
+    printf("Digite a quantidade de termos: ");
     scanf("%d", &num_termos);
 
-    char **vetorTermos = (char**)malloc(num_termos* sizeof(char*));
-    for(int i=0; i<num_termos;i++){
-        vetorTermos[i]=(char*)malloc(32*sizeof(char));
+    char **vetorTermos = (char**)malloc(num_termos * sizeof(char*));
+    for (int i = 0; i < num_termos; i++) {
+        vetorTermos[i] = (char*)malloc(32 * sizeof(char));
         printf("Termo: ");
         scanf("%s", vetorTermos[i]);
+        Patricia_Pesquisa(vetorTermos[i], arvore, comparacoes);
     }
 
     ResultadoRelevanciaPatricia resultados[numDocs];
-    for(int i=0; i<numDocs;i++){
-        resultados[i].idDoc=i+1;
-        resultados[i].relevancia=0.0;
+    for (int i = 0; i < numDocs; i++) {
+        resultados[i].idDoc = i + 1;
+        resultados[i].relevancia = 0.0;
         strcpy(resultados[i].nomeArquivo, arqtexto[i]);
     }
+
     // Para cada termo da consulta
     for (int t = 0; t < num_termos; t++) {
         TipoArvore no = arvore;
@@ -146,22 +151,24 @@ void RelevanciaPatricia(TipoArvore arvore, char* arqtexto[], int numDocs){
                 no = no->NO.NInterno.Dir;
         }
 
-        if (no != NULL && strcmp(no->NO.NExterno.Palavra, vetorTermos[t]) == 0) {
-            // Termo encontrado
-            int dj = LTamanho(&(no->NO.NExterno.Ocorrencias));
-            if (dj == 0) continue;
+        if (no != NULL) {
+            if (strcmp(no->NO.NExterno.Palavra, vetorTermos[t]) == 0) {
+                // Termo encontrado
+                int dj = LTamanho(&(no->NO.NExterno.Ocorrencias));
+                if (dj == 0) continue;
 
-            ApontadorLista aux = no->NO.NExterno.Ocorrencias.pPrimeiro->pProx;
-            while (aux != NULL) {
-                int idDoc = aux->idTermo.idDoc;
-                int f_ij = aux->idTermo.qtde;
-                int ni = ContaTermosDistintosNoDoc(arvore, idDoc);
-                if (ni == 0) ni = 1;
+                ApontadorLista aux = no->NO.NExterno.Ocorrencias.pPrimeiro->pProx;
+                while (aux != NULL) {
+                    int idDoc = aux->idTermo.idDoc;
+                    int f_ij = aux->idTermo.qtde;
+                    int ni = ContaTermosDistintosNoDoc(arvore, idDoc);
+                    if (ni == 0) ni = 1;
 
-                double w_ij = (double)f_ij * log2((double)numDocs / dj);
-                resultados[idDoc - 1].relevancia += w_ij / ni;
+                    double w_ij = (double)f_ij * log2((double)numDocs / dj);
+                    resultados[idDoc - 1].relevancia += w_ij / ni;
 
-                aux = aux->pProx;
+                    aux = aux->pProx;
+                }
             }
         }
     }
@@ -179,10 +186,13 @@ void RelevanciaPatricia(TipoArvore arvore, char* arqtexto[], int numDocs){
     }
     printf("--------------------------------------------\n");
 
+    printf("Total de comparações realizadas na pesquisa de termos: %d\n", *comparacoes);
+
     // Libera memória
     for (int i = 0; i < num_termos; i++) {
         free(vetorTermos[i]);
     }
     free(vetorTermos);
 }
+
 

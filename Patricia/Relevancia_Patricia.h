@@ -27,6 +27,6 @@ int ContaTermosDistintosNoDoc(
     TipoArvore arvore,
     int idDoc
 );
-void RelevanciaPatricia(TipoArvore arvore, char* arqTexto[], int numDocs);
+void RelevanciaPatricia(TipoArvore arvore, char* arqTexto[], int numDocs, int *comparacoesBuscaPatricia);
 int comparaRelevanciaPatricia(const void *a,const void *b);
 #endif

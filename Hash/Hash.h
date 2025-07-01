@@ -50,5 +50,5 @@ void LerPalavra(char *p, int Tam);
 void ProcessaArquivo(FILE* arq, int idDoc, TipoPesos p, TipoLista *Tabela, int M, int *totalComparacoes);
 ApontadorLista BuscaIndice(LLista* listaI, int idDoc);
 void LiberaTabela(TipoLista *Tabela, int M);
-void PesquisaNaTabelaHash(TipoLista* TabelaHash, char** vetorTermos, int numTermos, int M, TipoPesos p);
+void PesquisaNaTabelaHash(TipoLista* TabelaHash, char** vetorTermos, int numTermos, int M, TipoPesos p, int* comparacoes);
 #endif // HASH_H

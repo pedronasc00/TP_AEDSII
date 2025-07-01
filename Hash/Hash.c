@@ -194,10 +194,9 @@ void LiberaTabela(TipoLista *Tabela, int M) {
         }
     }
 }
-void PesquisaNaTabelaHash(TipoLista* TabelaHash, char** vetorTermos, int numTermos, int M, TipoPesos p) {
-    int comparacoes = 0;
+void PesquisaNaTabelaHash(TipoLista* TabelaHash, char** vetorTermos, int numTermos, int M, TipoPesos p, int* comparacoes) {
     int termosEncontrados = 0;
-
+    
     if (TabelaHash == NULL || M == 0) {
         printf("Tabela Hash nao foi criada ainda.\n");
         return;
@@ -208,9 +207,8 @@ void PesquisaNaTabelaHash(TipoLista* TabelaHash, char** vetorTermos, int numTerm
         char* palavraBusca = vetorTermos[i];
         
         int indiceHash = h(palavraBusca, p, M);
-        TipoItem* itemAchado = PesquisaItem(palavraBusca, p, TabelaHash, M, &comparacoes);
+        TipoItem* itemAchado = PesquisaItem(palavraBusca, p, TabelaHash, M, &comp_termo);
         //printf("Comparacoes realizadas: %d", *comparacoes);
-
         if (itemAchado != NULL) {            
             termosEncontrados++;
             printf("\n%d: %s ", indiceHash, itemAchado->Chave);
@@ -224,9 +222,7 @@ void PesquisaNaTabelaHash(TipoLista* TabelaHash, char** vetorTermos, int numTerm
         } else {
             printf("\nPalavra '%s' nao encontrada na tabela hash.\n", palavraBusca);
         }
-        comparacoes += comp_termo;
+        (*comparacoes) += comp_termo;
     }
-    printf("\nTermos encontrados: %d\n", termosEncontrados);
-    printf("Total de comparações realizadas: %d\n", comparacoes);
     printf("---------------------------------\n");
 }

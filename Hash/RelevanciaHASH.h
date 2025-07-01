@@ -9,6 +9,6 @@ typedef struct idRelevancia{
 }idRelevancia;
 
 int comparaRelevanciaHASH(const void *a, const void *b);
-void RelevanciaHASH(TipoLista* Tabela, int M, int numArqs, char* arqTexto[], TipoPesos p);
+void RelevanciaHASH(TipoLista* Tabela, int M, int numArqs, char* arqTexto[], TipoPesos p, int* comparacoes);
 
 #endif

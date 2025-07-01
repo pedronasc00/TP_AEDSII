@@ -11,12 +11,13 @@ int comparaRelevanciaHASH(const void *a, const void *b) {
     return 0;
 }
 
-void RelevanciaHASH(TipoLista* Tabela, int M, int numArqs, char* arqTexto[], TipoPesos p) {
+void RelevanciaHASH(TipoLista* Tabela, int M, int numArqs, char* arqTexto[], TipoPesos p, int* comparacoes) {
     if (Tabela == NULL || M == 0) 
     {
         printf("Tabela Vazia");
         return;
     }
+
     
     //1. Leitura de Termos para relevancia
     int numTermos;
@@ -33,7 +34,7 @@ void RelevanciaHASH(TipoLista* Tabela, int M, int numArqs, char* arqTexto[], Tip
     }
 
     //1.1 Incluir a função Pesquisa na função para calcular relevancia
-    PesquisaNaTabelaHash(Tabela, vetorTermos, numTermos, M, p);
+    PesquisaNaTabelaHash(Tabela, vetorTermos, numTermos, M, p, comparacoes);
     
     //2. Estrutura de Dados
     double NumDocs = (double)numArqs;
